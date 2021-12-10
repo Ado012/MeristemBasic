@@ -1,0 +1,56 @@
+ssh -X ado@cluster.hpcc.ucr.edu
+
+
+
+cd bigdata/OrgSimBasic_Remote
+
+
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcWt.model StandardSteadyStateWUSGradient01272A.init results021321FcAcWt 021321FcAcWt
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcM4.model StandardSteadyStateWUSGradient01272A.init results021321FcAcM4 021321FcAcM4
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcMd.model StandardSteadyStateWUSGradient01272A.init results021321FcAcMd 021321FcAcMd
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcTm.model StandardSteadyStateWUSGradient01272A.init results021321FcAcTm 021321FcAcTm
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAc9i.model StandardSteadyStateWUSGradient01272A.init results021321FcAc9i 021321FcAc9i
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAc5i.model StandardSteadyStateWUSGradient01272A.init results021321FcAc5i 021321FcAc5i
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcMi.model StandardSteadyStateWUSGradient01272A.init results021321FcAcMi 021321FcAcMi
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist021321FcAcCm.model StandardSteadyStateWUSGradient01272A.init results021321FcAcCm 021321FcAcCm
+
+
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrWt.model StandardSteadyStateWUSGradient01272A.init results021321DcTrWt 021321DcTrWt
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrMd.model StandardSteadyStateWUSGradient01272A.init results021321DcTrMd 021321DcTrMd
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrM4.model StandardSteadyStateWUSGradient01272A.init results021321DcTrM4 021321DcTrM4
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrTm.model StandardSteadyStateWUSGradient01272A.init results021321DcTrTm 021321DcTrTm
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTr9i.model StandardSteadyStateWUSGradient01272A.init results021321DcTr9i 021321DcTr9i
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTr5i.model StandardSteadyStateWUSGradient01272A.init results021321DcTr5i 021321DcTr5i
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrMi.model StandardSteadyStateWUSGradient01272A.init results021321DcTrMi 021321DcTrMi
+sbatch orgsimCommandScriptRemoteBasic.sh parameterlist_021321DcTrCm.model StandardSteadyStateWUSGradient01272A.init results021321DcTrCm 021321DcTrCm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sh orgsimCommandScriptPostProcess.sh results021621FcAcWt 021621FcAcWt '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+
+
+sh orgsimCommandScriptPostProcess.sh results021621DcTrWt 021621DcTrWt '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 150.0)' '(0.0, 250.0)' '(0.0, 80.0)'
+sh orgsimCommandScriptPostProcess.sh results021621DcTrMd 021621DcTrMd '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+sh orgsimCommandScriptPostProcess.sh results021621DcTrTm 021621DcTrTm '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+sh orgsimCommandScriptPostProcess.sh results021621DcTr9i 021621DcTr9i '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+sh orgsimCommandScriptPostProcess.sh results021621DcTr5i 021621DcTr5i '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+sh orgsimCommandScriptPostProcess.sh results021621DcTrMi 021621DcTrMi '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+
+sh orgsimCommandScriptPostProcess.sh results021621DcTrM4 021621DcTrM4 '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 500.0)' '(0.0, 80.0)'
+311414074759989
+
+
+check diffusion
