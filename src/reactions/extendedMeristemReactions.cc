@@ -1234,8 +1234,8 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 
 //loop across 2 chromosomes and 5 binding sites calling CRMProbabilityGenerator
-            for (n=0; n <= 1; n++)
-            {
+        n = 0; //limit to one chromsome for now 121221
+
                 for (i=0; i <= crmBindingSites; i++)
                 {
 
@@ -1249,7 +1249,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
                                             compartment, dimerUnbindP[i], L1nodimer, bonusL1MonCoopt, distanceFromCentralBase);
 
                 }
-            }
+
 
 
 
@@ -1344,21 +1344,20 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
         //10: Clavata3ActivationMechanisms: Calculate Activation for current CRM Configuration
 
         //if within proper range clv3 activation takes place
-        if (distanceFromCentralAxis<=clv3SourceWidth && zvar>=clv3Barrier)
-        {
+        //move range calculation within function 122821, shouldn't really effect the results but more accurate.
 
 
-                chromoCycle=0;//unused
+
+                chromoCycle=0;//limit to one chromosome so far
                 clv3Creation +=Clavata3ActivationMechanisms(activation, clv3Creation, clv3P, wusMonomer, wusDimer, wusMonomerCoefficient,
-                                                            wusDimerCoefficient, chromoCycle, compartment, polTimeLimit, crmOrMarkerSwitch);
+                                                            wusDimerCoefficient, chromoCycle, compartment, polTimeLimit, crmOrMarkerSwitch, distanceFromCentralAxis, clv3SourceWidth, zvar, clv3Barrier);
 
 
 
 
-        }
 
-        else //no activation
-            clv3Creation=0;
+
+
 
 
 

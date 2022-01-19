@@ -1,0 +1,215 @@
+activatorGrn 1 16 1 1
+
+topology 4 0 0
+
+##########################
+WUS 4 1
+WUSRNA_Dynamics 9 1 4
+1 #wusRNA_Source
+5 #wusRna_SourceParameter param0t10 might want to change topology
+0.1 #WusRnaDeg_Parameter
+10 #wusRna_Clv3RnaInteractParameter    param5increase3
+2 #wusRna_Clv3RnaNexponent   param6
+3.0 #wusRna_SourceWidth
+8.5 #under_L1Thickness 
+5.5 #wusRna_Barrier
+1 #wusRna_Freeze
+0 #WusRna_X
+1 #WusRna_Y
+2 #WusRna_Z
+8 #wusRna_Clv3Peptide
+
+##########################
+WUSNuc 5 1
+wUSNuc_Dynamics 10 1 7
+0 #wusNuc_WusRnaTransP
+0.5 #wusNuc_DegParameter
+4 #wusNuc_Clv3WusNucP
+2 #wusNuc_Clv3WusNucNexp
+0.5 #wusNuc_WusCyto2NucP
+2.0 #wusNuc_WusNuc2CytoP
+1 #wusNuc_Freeze
+0.4 #wusNuc_CkP
+1.0 #wusNuc_OuterLayerExportP
+100 #wusNuc_StabP
+0 #wusn_X
+1 #wusn_Y
+2 #wusn_Z
+4 #WusNuc_WusRna
+8 #wusNuc_Clv3Peptide
+6 #WusNuc_WusCyto
+18 #WusNuc_CkComplex
+
+##########################
+WUSCyto 6 2
+wUSCyto_Dynamics 8 1 4
+3.5 #wusCyto_WusRnaTrans
+0.1 #wusCyto_DegP
+2.0 #wusCyto_WusNuc2Cyto
+0.5 #wusCyto_NucP
+10 #wusCyto_Clv3WusCytoP
+2 #wusCyto_Clv3WusCytoNexp
+1 #wusCyto_Freeze
+0.4 #wusCyto_CkP
+4 #wusCyto_WusRna
+5 #wusCyto_WusNuc
+8 #wusCyto_Clv3Peptide
+18 #wusCyto_CkComplex
+diffusionSimple 1 0
+0.0 #wusCyto_diffusionP
+
+##########################
+Y 7 1
+cLV3_Dynamics 43 1 5
+3.0 #clv3_Clv3P
+1 #clv3_wusMonomerCo 
+1 #clv3_wusDimerCo param40_1
+0.2 #clv3_FluxP	param41
+0.1 #clv3_DecayP param42
+1 #clv3_CrmactivityCo
+3 #clv3_SourceWidth
+1 #clv3_TimeStep for stoch purposes only not related to actual timestep in overall sim
+425 #clv3_WusSatPoint
+0.005 #clv3_CooptMonEffect
+0.8 #clv3_CooptDimEffect
+0.1 #clv3_Bind1
+0.1 #clv3_Bind2
+0.1 #clv3_Bind3
+0.1 #clv3_Bind4
+0.1 #clv3_Bind5
+0.096 #clv3_Unbind1
+0.019 #clv3_Unbind2
+0.037 #clv3_Unbind3
+0.057 #clv3_Unbind4
+0.12 #clv3_Unbind5
+0 #clv3_ActivationOnlyFlag
+5 #clv3_Barrier
+8 #clv3_ActivationMech
+0 #clv3_SuppressDecay
+0 #clv3_FrozenWUS
+0 #clv3_CrmOrMarkerSwitch
+5 #clv3_crmFireMax
+0 #clv3_M4Flag
+3 #clv3_HABonusCoopt
+2 #clv3_MeighborOnlyCoopt
+1 #clv3_dimerBonusBindP
+0.1 #clv3_polBaseBindAffinity
+4 #clv3_polTimeLimit
+1000 #clv3_monFireLimit
+1 #clv3_dimerUnbindP1
+1 #clv3_dimerUnbindP2
+1 #clv3_dimerUnbindP3
+1 #clv3_dimerUnbindP4
+1 #clv3_dimerUnbindP5
+0 #clv3_L1nodimer
+0 #bonusL1MonCoopt
+100 #unbindTimer
+5 #clv3_WusNuc
+0 #clv3_X
+1 #clv3_Y
+2 #clv3_Z
+9 #clv3_StochasticOverflow
+##########################
+CLV3_Peptide 8 2
+CLV3Peptide_Dynamics 5 1 4
+2 #clv3Peptide_ProdP
+0.07 #clv3Peptide_DegP 
+0 #clv3Peptide_Freeze
+0 #clv3Peptide_ActivationOnlyFlag
+0.0 #innerLayerEffectiveness
+7 #clv3Peptide_clv3Rna
+0 #clv3P_X
+1 #clv3P_Y
+2 #clv3P_Z
+diffusionSimple 1 0
+0.1 #clv3Peptide_diffusionP  	param36_3
+##########################
+WExportRate 9 1
+wUSP_ExportRate 1 1 1
+1 #conversionFactor
+5 #WUSNuc param39
+
+##########################
+CLV3_Tracker 10 1
+cLV3_Tracker 1 1 1
+1 #conversionFactor
+7 #CLV3Signal param39
+
+##########################
+StochasticMarkerOverFlow 11 0
+
+##########################
+WusMonomer 12 1
+crmupdatem 1 1 1
+0   #crmsetting   	param23
+12 #wusmonomer
+##########################
+WusDimer 13 1
+crmupdated 1 1 1
+0   #crmsetting   	param23
+13 #wusdimer
+##########################
+WusMarkerMonomer 14 1
+crmupdatem 1 1 1
+1   #crmSetting   	param23
+14 #wusmarkermonomer
+##########################
+WusMarkerDimer 15 1
+crmupdated 1 1 1
+1   #crmSetting   	param23
+15 #wusmarkerdimer
+
+##########################
+CkReceptor 16 1
+ckReceptor_Dynamics 10 1 5
+1 #ckR_SourceP
+3 #ckR_SourceDiameter
+5 #ckR_GradientHeight
+3 #ckR_ProdP
+0.1 #ckR_DegP
+0.1 #ckR_ReceptorAssP
+0.1 #ckR_ComplexDissP
+4 #ckR_GradXaxe
+4 #ckR_GradYaxe
+3 #ckR_GradeZaxe
+0 #ckR_x
+1 #ckR_y
+2 #ckR_z
+17 #ckR_ckLigand
+18 #ckR_ckComplex
+##########################
+CkLigand 17 2
+ckLigand_Dynamics 5 1 3
+1 #ckL_SourceP
+3 #ckL_ProdP
+0.1 #ckL_DegP
+5 #ckL_GradientCenterHeight
+14 #ckL_ProdDiameter
+0 #ckL_x
+1 #ckL_y
+2 #ckL_z
+diffusionSimple 1 0
+0.5 #ckL_diffusionP  	
+##########################
+CkComplex 18 1
+ckComplex_Dynamics 1 1 3
+0.1 #ckC_DegP
+0 #ckC_x
+1 #ckC_y
+2 #ckC_z
+##########################
+WExportRate 19 1
+wUSP_ExportRate 1 1 1
+1 #conversionFactor
+5 #WUSNuc param39
+
+##########################
+massActionEnzymatic 1 3 1 1 2
+0 # p_14
+10
+9
+9 9
+
+neighborhoodDistanceSphere 3 0
+1.0 0 0.0 # p_15 - p_17
+

@@ -1,0 +1,726 @@
+ssh -X ado@cluster.hpcc.ucr.edu
+
+cd bigdata/MeristemSim/
+
+sbatch mersimCommandScriptRemote.sh ./parameterfiles/021321/parameterlist_021321DcTrWt.model StandardSteadyStateWUSGradientEmpty.init results021321DcTrWt 021321DcTrWt
+
+
+
+sbatch mersimCommandScriptRemote.sh parameterlist_021321DcTrWt.model StandardSteadyStateWUSGradientEmpty.init results021321DcTrWt 021321DcTrWt
+
+
+parameterlist_021121FcAcWt.model StandardSteadyStateWUSGradient01272A.init rk8 > results061121FcAcWt
+
+./MeristemSim parameterlist_021321DcTrWt.model StandardSteadyStateWUSGradientEmpty.init rk6 > results021321DcTrWt
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAcWt 061121FcAcWt '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAcW1 061121FcAcW1 '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAcW2 061121FcAcW2 '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAcTm 061121FcAcTm '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAcT1 061121FcAcT1 '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAc9i 061121FcAc9i '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh orgsimCommandScriptPostProcess.sh results061121FcAc91 061121FcAc91 '(0.0, 2.0)' '(0.0, 100.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+
+qmake MeristemBasic.pro make 
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAcWt.model StandardSteadyStateWUSGradient01272A.init results041021FcAcWt 041021FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAcMd.model StandardSteadyStateWUSGradient01272A.init results041021FcAcMd 041021FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAcM4.model StandardSteadyStateWUSGradient01272A.init results041021FcAcM4 041021FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAcTm.model StandardSteadyStateWUSGradient01272A.init results041021FcAcTm 041021FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAcMi.model StandardSteadyStateWUSGradient01272A.init results041021FcAcMi 041021FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc5i.model StandardSteadyStateWUSGradient01272A.init results041021FcAc5i 041021FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc9i.model StandardSteadyStateWUSGradient01272A.init results041021FcAc9i 041021FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc7i.model StandardSteadyStateWUSGradient01272A.init results041021FcAc7i 041021FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc1i.model StandardSteadyStateWUSGradient01272A.init results041021FcAc1i 041021FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc6i.model StandardSteadyStateWUSGradient01272A.init results041021FcAc6i 041021FcAc6i
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041021/parameterlist041021FcAc5m.model StandardSteadyStateWUSGradient01272A.init results041021FcAc5m 041021FcAc5m
+
+
+cp ./Results/Raw_DataFiles/wtresults041021FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+cp ./Results/Raw_DataFiles/wtresults041021FcAc7i/pararesults099.csv ./sheller_files/F7I.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAc6i/pararesults099.csv ./sheller_files/F6I.csv
+cp ./Results/Raw_DataFiles/wtresults041021FcAc1i/pararesults099.csv ./sheller_files/F1I.csv
+
+
+no coopt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAcWt.model StandardSteadyStateWUSGradient01272A.init results041121FcAcWt 041121FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAcMd.model StandardSteadyStateWUSGradient01272A.init results041121FcAcMd 041121FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAcM4.model StandardSteadyStateWUSGradient01272A.init results041121FcAcM4 041121FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAcTm.model StandardSteadyStateWUSGradient01272A.init results041121FcAcTm 041121FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAcMi.model StandardSteadyStateWUSGradient01272A.init results041121FcAcMi 041121FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAc5i.model StandardSteadyStateWUSGradient01272A.init results041121FcAc5i 041121FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAc9i.model StandardSteadyStateWUSGradient01272A.init results041121FcAc9i 041121FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAc7i.model StandardSteadyStateWUSGradient01272A.init results041121FcAc7i 041121FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAc1i.model StandardSteadyStateWUSGradient01272A.init results041121FcAc1i 041121FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041121/parameterlist041121FcAc6i.model StandardSteadyStateWUSGradient01272A.init results041121FcAc6i 041121FcAc6i
+
+
+hicoopt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAcWt.model StandardSteadyStateWUSGradient01272A.init results041221FcAcWt 041221FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAcMd.model StandardSteadyStateWUSGradient01272A.init results041221FcAcMd 041221FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAcM4.model StandardSteadyStateWUSGradient01272A.init results041221FcAcM4 041221FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAcTm.model StandardSteadyStateWUSGradient01272A.init results041221FcAcTm 041221FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAcMi.model StandardSteadyStateWUSGradient01272A.init results041221FcAcMi 041221FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAc5i.model StandardSteadyStateWUSGradient01272A.init results041221FcAc5i 041221FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAc9i.model StandardSteadyStateWUSGradient01272A.init results041221FcAc9i 041221FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAc7i.model StandardSteadyStateWUSGradient01272A.init results041221FcAc7i 041221FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAc1i.model StandardSteadyStateWUSGradient01272A.init results041221FcAc1i 041221FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041221/parameterlist041221FcAc6i.model StandardSteadyStateWUSGradient01272A.init results041221FcAc6i 041221FcAc6i
+
+
+
+cp ./Results/Raw_DataFiles/wtresults041121FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults041121FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+cp ./Results/Raw_DataFiles/wtresults041221FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults041221FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc39.model StandardSteadyStateWUSGradient01272A.init results041321FcAc39 041321FcAc39
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc16.model StandardSteadyStateWUSGradient01272A.init results041321FcAc16 041321FcAc16
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc06.model StandardSteadyStateWUSGradient01272A.init results041321FcAc06 041321FcAc06
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc23.model StandardSteadyStateWUSGradient01272A.init results041321FcAc23 041321FcAc23
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc42.model StandardSteadyStateWUSGradient01272A.init results041321FcAc42 041321FcAc42
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc15.model StandardSteadyStateWUSGradient01272A.init results041321FcAc15 041321FcAc15
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc22.model StandardSteadyStateWUSGradient01272A.init results041321FcAc22 041321FcAc22
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc25.model StandardSteadyStateWUSGradient01272A.init results041321FcAc25 041321FcAc25
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc40.model StandardSteadyStateWUSGradient01272A.init results041321FcAc40 041321FcAc40
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc18.model StandardSteadyStateWUSGradient01272A.init results041321FcAc18 041321FcAc18
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc14.model StandardSteadyStateWUSGradient01272A.init results041321FcAc14 041321FcAc14
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc05.model StandardSteadyStateWUSGradient01272A.init results041321FcAc05 041321FcAc05
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc10.model StandardSteadyStateWUSGradient01272A.init results041321FcAc10 041321FcAc10
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc04.model StandardSteadyStateWUSGradient01272A.init results041321FcAc04 041321FcAc04
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc19.model StandardSteadyStateWUSGradient01272A.init results041321FcAc19 041321FcAc19
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc27.model StandardSteadyStateWUSGradient01272A.init results041321FcAc27 041321FcAc27
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc02.model StandardSteadyStateWUSGradient01272A.init results041321FcAc02 041321FcAc02
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc28.model StandardSteadyStateWUSGradient01272A.init results041321FcAc28 041321FcAc28
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc31.model StandardSteadyStateWUSGradient01272A.init results041321FcAc31 041321FcAc31
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc24.model StandardSteadyStateWUSGradient01272A.init results041321FcAc24 041321FcAc24
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc32.model StandardSteadyStateWUSGradient01272A.init results041321FcAc32 041321FcAc32
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAcWt.model StandardSteadyStateWUSGradient01272A.init results041321FcAcWt 041321FcAcWt
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc11.model StandardSteadyStateWUSGradient01272A.init results041321FcAc11 041321FcAc11
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc21.model StandardSteadyStateWUSGradient01272A.init results041321FcAc21 041321FcAc21
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc07.model StandardSteadyStateWUSGradient01272A.init results041321FcAc07 041321FcAc07
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc08.model StandardSteadyStateWUSGradient01272A.init results041321FcAc08 041321FcAc08
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc41.model StandardSteadyStateWUSGradient01272A.init results041321FcAc41 041321FcAc41
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc01.model StandardSteadyStateWUSGradient01272A.init results041321FcAc01 041321FcAc01
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc38.model StandardSteadyStateWUSGradient01272A.init results041321FcAc38 041321FcAc38
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc29.model StandardSteadyStateWUSGradient01272A.init results041321FcAc29 041321FcAc29
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc33.model StandardSteadyStateWUSGradient01272A.init results041321FcAc33 041321FcAc33
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc36.model StandardSteadyStateWUSGradient01272A.init results041321FcAc36 041321FcAc36
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc34.model StandardSteadyStateWUSGradient01272A.init results041321FcAc34 041321FcAc34
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc20.model StandardSteadyStateWUSGradient01272A.init results041321FcAc20 041321FcAc20
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc12.model StandardSteadyStateWUSGradient01272A.init results041321FcAc12 041321FcAc12
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc17.model StandardSteadyStateWUSGradient01272A.init results041321FcAc17 041321FcAc17
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc26.model StandardSteadyStateWUSGradient01272A.init results041321FcAc26 041321FcAc26
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc13.model StandardSteadyStateWUSGradient01272A.init results041321FcAc13 041321FcAc13
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc09.model StandardSteadyStateWUSGradient01272A.init results041321FcAc09 041321FcAc09
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc35.model StandardSteadyStateWUSGradient01272A.init results041321FcAc35 041321FcAc35
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc30.model StandardSteadyStateWUSGradient01272A.init results041321FcAc30 041321FcAc30
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc03.model StandardSteadyStateWUSGradient01272A.init results041321FcAc03 041321FcAc03
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/041321/parameterlist041321FcAc37.model StandardSteadyStateWUSGradient01272A.init results041321FcAc37 041321FcAc37
+
+
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc01/pararesults099.csv ./sheller_files/F01.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc02/pararesults099.csv ./sheller_files/F02.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc03/pararesults099.csv ./sheller_files/F03.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc04/pararesults099.csv ./sheller_files/F04.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc05/pararesults099.csv ./sheller_files/F05.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc06/pararesults099.csv ./sheller_files/F06.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc07/pararesults099.csv ./sheller_files/F07.csv
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAc08/pararesults099.csv ./sheller_files/F08.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc09/pararesults099.csv ./sheller_files/F09.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc10/pararesults099.csv ./sheller_files/F10.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc11/pararesults099.csv ./sheller_files/F11.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc12/pararesults099.csv ./sheller_files/F12.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc13/pararesults099.csv ./sheller_files/F13.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc14/pararesults099.csv ./sheller_files/F14.csv
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAc15/pararesults099.csv ./sheller_files/F15.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc16/pararesults099.csv ./sheller_files/F16.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc17/pararesults099.csv ./sheller_files/F17.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc18/pararesults099.csv ./sheller_files/F18.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc19/pararesults099.csv ./sheller_files/F19.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc20/pararesults099.csv ./sheller_files/F20.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc21/pararesults099.csv ./sheller_files/F21.csv
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAc22/pararesults099.csv ./sheller_files/F22.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc23/pararesults099.csv ./sheller_files/F23.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc24/pararesults099.csv ./sheller_files/F24.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc25/pararesults099.csv ./sheller_files/F25.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc26/pararesults099.csv ./sheller_files/F26.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc27/pararesults099.csv ./sheller_files/F27.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc28/pararesults099.csv ./sheller_files/F28.csv
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAc29/pararesults099.csv ./sheller_files/F29.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc30/pararesults099.csv ./sheller_files/F30.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc31/pararesults099.csv ./sheller_files/F31.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc32/pararesults099.csv ./sheller_files/F32.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc33/pararesults099.csv ./sheller_files/F33.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc34/pararesults099.csv ./sheller_files/F34.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc35/pararesults099.csv ./sheller_files/F35.csv
+
+cp ./Results/Raw_DataFiles/wtresults041321FcAc36/pararesults099.csv ./sheller_files/F36.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc37/pararesults099.csv ./sheller_files/F37.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc38/pararesults099.csv ./sheller_files/F38.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc39/pararesults099.csv ./sheller_files/F39.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc40/pararesults099.csv ./sheller_files/F40.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc41/pararesults099.csv ./sheller_files/F41.csv
+cp ./Results/Raw_DataFiles/wtresults041321FcAc42/pararesults099.csv ./sheller_files/F42.csv
+
+
+sh mersimCommandScriptPostProcess.sh results041021FcAcWt 041021FcAcWt '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAcM4 041021FcAcM4 '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAcMd 041021FcAcMd '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAcTm 041021FcAcTm '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc9i 041021FcAc9i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc5i 041021FcAc5i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAcMi 041021FcAcMi '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc6i 041021FcAc6i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc7i 041021FcAc7i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc1i 041021FcAc1i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results041021FcAc5m 041021FcAc5m '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+
+
+
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAcWt.model StandardSteadyStateWUSGradient01272A.init results041721FcAcWt 041721FcAcWt
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAcMd.model StandardSteadyStateWUSGradient01272A.init results041721FcAcMd 041721FcAcMd
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAcM4.model StandardSteadyStateWUSGradient01272A.init results041721FcAcM4 041721FcAcM4
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAcTm.model StandardSteadyStateWUSGradient01272A.init results041721FcAcTm 041721FcAcTm
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAcMi.model StandardSteadyStateWUSGradient01272A.init results041721FcAcMi 041721FcAcMi
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc5i.model StandardSteadyStateWUSGradient01272A.init results041721FcAc5i 041721FcAc5i
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc9i.model StandardSteadyStateWUSGradient01272A.init results041721FcAc9i 041721FcAc9i
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc7i.model StandardSteadyStateWUSGradient01272A.init results041721FcAc7i 041721FcAc7i
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc1i.model StandardSteadyStateWUSGradient01272A.init results041721FcAc1i 041721FcAc1i
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc6i.model StandardSteadyStateWUSGradient01272A.init results041721FcAc6i 041721FcAc6i
+
+
+sbatch orgsimCommandScriptRemote.sh ./parameterfiles/041721/parameterlist041721FcAc5m.model StandardSteadyStateWUSGradient01272A.init results041721FcAc5m 041721FcAc5m
+
+
+cp ./Results/Raw_DataFiles/wtresults041721FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults041721FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults041721FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults041721FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+
+
+Figure 8
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAcWt.model StandardSteadyStateWUSGradient01272A.init results042021FcAcWt 042021FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAcMd.model StandardSteadyStateWUSGradient01272A.init results042021FcAcMd 042021FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAcM4.model StandardSteadyStateWUSGradient01272A.init results042021FcAcM4 042021FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAcTm.model StandardSteadyStateWUSGradient01272A.init results042021FcAcTm 042021FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAcMi.model StandardSteadyStateWUSGradient01272A.init results042021FcAcMi 042021FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc5i.model StandardSteadyStateWUSGradient01272A.init results042021FcAc5i 042021FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc9i.model StandardSteadyStateWUSGradient01272A.init results042021FcAc9i 042021FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc7i.model StandardSteadyStateWUSGradient01272A.init results042021FcAc7i 042021FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc1i.model StandardSteadyStateWUSGradient01272A.init results042021FcAc1i 042021FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc6i.model StandardSteadyStateWUSGradient01272A.init results042021FcAc6i 042021FcAc6i
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042021/parameterlist042021FcAc5m.model StandardSteadyStateWUSGradient01272A.init results042021FcAc5m 042021FcAc5m
+
+
+cp ./Results/Raw_DataFiles/wtresults042021FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAc7i/pararesults099.csv ./sheller_files/F7I.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAc6i/pararesults099.csv ./sheller_files/F6I.csv
+cp ./Results/Raw_DataFiles/wtresults042021FcAc1i/pararesults099.csv ./sheller_files/F1I.csv
+
+cp ./Results/Raw_DataFiles/wtresults042021FcAc5m/pararesults099.csv ./sheller_files/F5M.csv
+
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcWt 042021FcAcWt '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcM4 042021FcAcM4 '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcMd 042021FcAcMd '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcTm 042021FcAcTm '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc9i 042021FcAc9i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc5i 042021FcAc5i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcMi 042021FcAcMi '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc6i 042021FcAc6i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc7i 042021FcAc7i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc1i 042021FcAc1i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAc5m 042021FcAc5m '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 175.0)' '(0.0, 25.0)'
+
+sh mersimCommandScriptPostProcess.sh results042021FcAcWt 042021FcAcWt '(0.0, 2.0)' '(0.0, 300.0)' '(0, 250.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 60.0)' '(0.0, 250.0)' '(0.0, 25.0)'
+
+
+
+
+
+Fig 9
+no coopt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAcWt.model StandardSteadyStateWUSGradient01272A.init results042121FcAcWt 042121FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAcMd.model StandardSteadyStateWUSGradient01272A.init results042121FcAcMd 042121FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAcM4.model StandardSteadyStateWUSGradient01272A.init results042121FcAcM4 042121FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAcTm.model StandardSteadyStateWUSGradient01272A.init results042121FcAcTm 042121FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAcMi.model StandardSteadyStateWUSGradient01272A.init results042121FcAcMi 042121FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAc5i.model StandardSteadyStateWUSGradient01272A.init results042121FcAc5i 042121FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAc9i.model StandardSteadyStateWUSGradient01272A.init results042121FcAc9i 042121FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAc7i.model StandardSteadyStateWUSGradient01272A.init results042121FcAc7i 042121FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAc1i.model StandardSteadyStateWUSGradient01272A.init results042121FcAc1i 042121FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042121/parameterlist042121FcAc6i.model StandardSteadyStateWUSGradient01272A.init results042121FcAc6i 042121FcAc6i
+
+
+hicoopt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAcWt.model StandardSteadyStateWUSGradient01272A.init results042221FcAcWt 042221FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAcMd.model StandardSteadyStateWUSGradient01272A.init results042221FcAcMd 042221FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAcM4.model StandardSteadyStateWUSGradient01272A.init results042221FcAcM4 042221FcAcM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAcTm.model StandardSteadyStateWUSGradient01272A.init results042221FcAcTm 042221FcAcTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAcMi.model StandardSteadyStateWUSGradient01272A.init results042221FcAcMi 042221FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAc5i.model StandardSteadyStateWUSGradient01272A.init results042221FcAc5i 042221FcAc5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAc9i.model StandardSteadyStateWUSGradient01272A.init results042221FcAc9i 042221FcAc9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAc7i.model StandardSteadyStateWUSGradient01272A.init results042221FcAc7i 042221FcAc7i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAc1i.model StandardSteadyStateWUSGradient01272A.init results042221FcAc1i 042221FcAc1i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042221/parameterlist042221FcAc6i.model StandardSteadyStateWUSGradient01272A.init results042221FcAc6i 042221FcAc6i
+
+
+cp ./Results/Raw_DataFiles/wtresults042121FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+cp ./Results/Raw_DataFiles/wtresults042221FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042221FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+
+
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc39.model StandardSteadyStateWUSGradient01272A.init results042321FcAc39 042321FcAc39
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc16.model StandardSteadyStateWUSGradient01272A.init results042321FcAc16 042321FcAc16
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc06.model StandardSteadyStateWUSGradient01272A.init results042321FcAc06 042321FcAc06
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc23.model StandardSteadyStateWUSGradient01272A.init results042321FcAc23 042321FcAc23
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc42.model StandardSteadyStateWUSGradient01272A.init results042321FcAc42 042321FcAc42
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc15.model StandardSteadyStateWUSGradient01272A.init results042321FcAc15 042321FcAc15
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc22.model StandardSteadyStateWUSGradient01272A.init results042321FcAc22 042321FcAc22
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc25.model StandardSteadyStateWUSGradient01272A.init results042321FcAc25 042321FcAc25
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc40.model StandardSteadyStateWUSGradient01272A.init results042321FcAc40 042321FcAc40
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc18.model StandardSteadyStateWUSGradient01272A.init results042321FcAc18 042321FcAc18
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc14.model StandardSteadyStateWUSGradient01272A.init results042321FcAc14 042321FcAc14
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc05.model StandardSteadyStateWUSGradient01272A.init results042321FcAc05 042321FcAc05
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc10.model StandardSteadyStateWUSGradient01272A.init results042321FcAc10 042321FcAc10
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc04.model StandardSteadyStateWUSGradient01272A.init results042321FcAc04 042321FcAc04
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc19.model StandardSteadyStateWUSGradient01272A.init results042321FcAc19 042321FcAc19
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc27.model StandardSteadyStateWUSGradient01272A.init results042321FcAc27 042321FcAc27
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc02.model StandardSteadyStateWUSGradient01272A.init results042321FcAc02 042321FcAc02
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc28.model StandardSteadyStateWUSGradient01272A.init results042321FcAc28 042321FcAc28
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc31.model StandardSteadyStateWUSGradient01272A.init results042321FcAc31 042321FcAc31
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc24.model StandardSteadyStateWUSGradient01272A.init results042321FcAc24 042321FcAc24
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc32.model StandardSteadyStateWUSGradient01272A.init results042321FcAc32 042321FcAc32
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAcWt.model StandardSteadyStateWUSGradient01272A.init results042321FcAcWt 042321FcAcWt
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc11.model StandardSteadyStateWUSGradient01272A.init results042321FcAc11 042321FcAc11
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc21.model StandardSteadyStateWUSGradient01272A.init results042321FcAc21 042321FcAc21
+sbatch meristembasicCommandScriptRemote.sh ./parameterfilemersims/042321/parameterlist042321FcAc07.model StandardSteadyStateWUSGradient01272A.init results042321FcAc07 042321FcAc07
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc08.model StandardSteadyStateWUSGradient01272A.init results042321FcAc08 042321FcAc08
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc41.model StandardSteadyStateWUSGradient01272A.init results042321FcAc41 042321FcAc41
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc01.model StandardSteadyStateWUSGradient01272A.init results042321FcAc01 042321FcAc01
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc38.model StandardSteadyStateWUSGradient01272A.init results042321FcAc38 042321FcAc38
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc29.model StandardSteadyStateWUSGradient01272A.init results042321FcAc29 042321FcAc29
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc33.model StandardSteadyStateWUSGradient01272A.init results042321FcAc33 042321FcAc33
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc36.model StandardSteadyStateWUSGradient01272A.init results042321FcAc36 042321FcAc36
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc34.model StandardSteadyStateWUSGradient01272A.init results042321FcAc34 042321FcAc34
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc20.model StandardSteadyStateWUSGradient01272A.init results042321FcAc20 042321FcAc20
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc12.model StandardSteadyStateWUSGradient01272A.init results042321FcAc12 042321FcAc12
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc17.model StandardSteadyStateWUSGradient01272A.init results042321FcAc17 042321FcAc17
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc26.model StandardSteadyStateWUSGradient01272A.init results042321FcAc26 042321FcAc26
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc13.model StandardSteadyStateWUSGradient01272A.init results042321FcAc13 042321FcAc13
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc09.model StandardSteadyStateWUSGradient01272A.init results042321FcAc09 042321FcAc09
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc35.model StandardSteadyStateWUSGradient01272A.init results042321FcAc35 042321FcAc35
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc30.model StandardSteadyStateWUSGradient01272A.init results042321FcAc30 042321FcAc30
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc03.model StandardSteadyStateWUSGradient01272A.init results042321FcAc03 042321FcAc03
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042321/parameterlist042321FcAc37.model StandardSteadyStateWUSGradient01272A.init results042321FcAc37 042321FcAc37
+
+
+
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc01/pararesults099.csv ./sheller_files/F01.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc02/pararesults099.csv ./sheller_files/F02.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc03/pararesults099.csv ./sheller_files/F03.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc04/pararesults099.csv ./sheller_files/F04.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc05/pararesulmersimts099.csv ./sheller_files/F05.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc06/pararesults099.csv ./sheller_files/F06.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc07/pararesults099.csv ./sheller_files/F07.csv
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAc08/pararesults099.csv ./sheller_files/F08.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc09/pararesults099.csv ./sheller_files/F09.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc10/pararesults099.csv ./sheller_files/F10.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc11/pararesults099.csv ./sheller_files/F11.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc12/pararesults099.csv ./sheller_files/F12.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc13/pararesults099.csv ./sheller_files/F13.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc14/pararesults099.csv ./sheller_files/F14.csv
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAc15/pararesults099.csv ./sheller_files/F15.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc16/pararesults099.csv ./sheller_files/F16.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc17/pararesults099.csv ./sheller_files/F17.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc18/pararesults099.csv ./sheller_files/F18.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc19/pararesults099.csv ./sheller_files/F19.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc20/pararesults099.csv ./sheller_files/F20.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc21/pararesults099.csv ./sheller_files/F21.csv
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAc22/pararesults099.csv ./sheller_files/F22.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc23/pararesults099.csv ./sheller_files/F23.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc24/pararesults099.csv ./sheller_files/F24.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc25/pararesults099.csv ./sheller_files/F25.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc26/pararesults099.csv ./sheller_files/F26.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc27/pararesults099.csv ./sheller_files/F27.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc28/pararesults099.csv ./sheller_files/F28.csv
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAc29/pararesults099.csv ./sheller_files/F29.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc30/pararesults099.csv ./sheller_files/F30.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc31/pararesults099.csv ./sheller_files/F31.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc32/pararesults099.csv ./sheller_files/F32.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc33/pararesults099.csv ./sheller_files/F33.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc34/pararesults099.csv ./sheller_files/F34.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc35/pararesults099.csv ./sheller_files/F35.csv
+
+cp ./Results/Raw_DataFiles/wtresults042321FcAc36/pararesults099.csv ./sheller_files/F36.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc37/pararesults099.csv ./sheller_files/F37.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc38/pararesults099.csv ./sheller_files/F38.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc39/pararesults099.csv ./sheller_files/F39.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc40/pararesults099.csv ./sheller_files/F40.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc41/pararesults099.csv ./sheller_files/F41.csv
+cp ./Results/Raw_DataFiles/wtresults042321FcAc42/pararesults099.csv ./sheller_files/F42.csv
+
+
+
+
+cp ./Results/Raw_DataFiles/wtresults042521FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042521FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042521FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042521FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042121FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+
+cp ./Results/Raw_DataFiles/wtresults042621FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042621FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042621FcAcM4/pararesulmersimts099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042621FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+
+
+
+
+Feedback
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrWt.model StandardSteadyStateWUSGradient01272A.init results042521DcTrWt 042521DcTrWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrMd.model StandardSteadyStateWUSGradient01272A.init results042521DcTrMd 042521DcTrMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrM4.model StandardSteadyStateWUSGradient01272A.init results042521DcTrM4 042521DcTrM4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrTm.model StandardSteadyStateWUSGradient01272A.init results042521DcTrTm 042521DcTrTm
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrMi.model StandardSteadyStateWUSGradient01272A.init results042521DcTrMi 042521DcTrMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTr5i.model StandardSteadyStateWUSGradient01272A.init results042521DcTr5i 042521DcTr5i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTr9i.model StandardSteadyStateWUSGradient01272A.init results042521DcTr9i 042521DcTr9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTr9i.model StandardSteadyStateWUSGradient01272A.init results042521DcTr9i 042521DcTr9i
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTr5m.model StandardSteadyStateWUSGradient01272A.init results042521DcTr5m 042521DcTr5m
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042521/parameterlist_042521DcTrCm.model StandardSteadyStateWUSGradient01272A.init results042521DcTrCm 042521DcTrCm
+
+
+cp ./Results/Raw_DataFiles/wtresults042521DcTrWt/pararesults099.csv ./sheller_files/DWT.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTrMd/pararesults099.csv ./sheller_files/DMD.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTrM4/pararesults099.csv ./sheller_files/DM4.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTrTm/pararesults099.csv ./sheller_files/DTM.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTr9i/pararesults099.csv ./sheller_files/D9I.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTr5i/pararesults099.csv ./sheller_files/D5I.csv
+cp ./Results/Raw_DataFiles/wtresults042521DcTrMi/pararesults099.csv ./sheller_files/DMI.csv
+
+
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrWt 042521DcTrWt '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrM4 042521DcTrM4 '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrMd 042521DcTrMd '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrTm 042521DcTrTm '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTr9i 042521DcTr9i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTr5i 042521DcTr5i '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrMi 042521DcTrMi '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+sh mersimCommandScriptPostProcess.sh results042521DcTrCm 042521DcTrCm '(0.0, 2.0)' '(0.0, 300.0)' '(0, 600.0)' '(0.0, 10.0)' '(0.0, 10.0)' '(0, 250.0)' '(0.0, 600.0)' '(0.0, 60.0)'
+
+
+jan102022
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcWt.model scaledinit0p1.init results042721FcAcW0 042721FcAcW0
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model scaledinit0p1.init results042721FcAcC0 042721FcAcC0
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcWt.model scaledinit0p25.init results042721FcAcW1 042721FcAcW1
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model scaledinit0p25.init results042721FcAcC1 042721FcAcC1
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcWt.model scaledinit0p5.init results042721FcAcW2 042721FcAcW2
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model scaledinit0p5.init results042721FcAcC2 042721FcAcC2
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcWt.model scaledinit1p5.init results042721FcAcW3 042721FcAcW3
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model scaledinit1p5.init results042721FcAcC3 042721FcAcC3
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcWt.model scaledinit2.init results042721FcAcW4 042721FcAcW4
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model scaledinit2.init results042721FcAcC4 042721FcAcC4
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcCm.model StandardSteadyStateWUSGradient01272A.init results042721FcAcCm 042721FcAcCm
+
+
+
+cp ./Results/Raw_DataFiles/wtresults042721FcAcW0/pararesults099.csv ./sheller_files/FW0.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcC0/pararesults099.csv ./sheller_files/FC0.csv
+
+cp ./Results/Raw_DataFiles/wtresults042721FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcCm/pararesults099.csv ./sheller_files/FCM.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcW1/pararesults099.csv ./sheller_files/FW1.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcC1/pararesults099.csv ./sheller_files/FC1.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcW2/pararesults099.csv ./sheller_files/FW2.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcC2/pararesults099.csv ./sheller_files/FC2.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults042721FcAcW3/pararesults099.csv ./sheller_files/FW3.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcC3/pararesults099.csv ./sheller_files/FC3.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcW4/pararesults099.csv ./sheller_files/FW4.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcC4/pararesults099.csv ./sheller_files/FC4.csv
+
+
+
+
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAcM4.model StandardSteadyStateWUSGradient01272A.init results042821FcAcM4 042821FcAcM4
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc5m.model StandardSteadyStateWUSGradient01272A.init results042821FcAc5m 042821FcAc5m
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAcMd.model StandardSteadyStateWUSGradient01272A.init results042821FcAcMd 042821FcAcMd
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAcMi.model StandardSteadyStateWUSGradient01272A.init results042821FcAcMi 042821FcAcMi
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc6i.model StandardSteadyStateWUSGradient01272A.init results042821FcAc6i 042821FcAc6i
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc7i.model StandardSteadyStateWUSGradient01272A.init results042821FcAc7i 042821FcAc7i
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAcWt.model StandardSteadyStateWUSGradient01272A.init results042821FcAcWt 042821FcAcWt
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc1i.model StandardSteadyStateWUSGradient01272A.init results042821FcAc1i 042821FcAc1i
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc9i.model StandardSteadyStateWUSGradient01272A.init results042821FcAc9i 042821FcAc9i
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAc5i.model StandardSteadyStateWUSGradient01272A.init results042821FcAc5i 042821FcAc5i
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042821/parameterlist042821FcAcTm.model StandardSteadyStateWUSGradient01272A.init results042821FcAcTm 042821FcAcTm
+
+
+cp ./Results/Raw_DataFiles/wtresults042821FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults042821FcAc7i/pararesults099.csv ./sheller_files/F7I.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAc6i/pararesults099.csv ./sheller_files/F6I.csv
+cp ./Results/Raw_DataFiles/wtresults042821FcAc1i/pararesults099.csv ./sheller_files/F1I.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults042921FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults042921FcAc7i/pararesults099.csv ./sheller_files/F7I.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAc6i/pararesults099.csv ./sheller_files/F6I.csv
+cp ./Results/Raw_DataFiles/wtresults042921FcAc1i/pararesults099.csv ./sheller_files/F1I.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults043021FcAcWt/pararesults099.csv ./sheller_files/FWT.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAcMd/pararesults099.csv ./sheller_files/FMD.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAcM4/pararesults099.csv ./sheller_files/FM4.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAcTm/pararesults099.csv ./sheller_files/FTM.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAc9i/pararesults099.csv ./sheller_files/F9I.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAc5i/pararesults099.csv ./sheller_files/F5I.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAcMi/pararesults099.csv ./sheller_files/FMI.csv
+
+
+cp ./Results/Raw_DataFiles/wtresults043021FcAc7i/pararesults099.csv ./sheller_files/F7I.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAc6i/pararesults099.csv ./sheller_files/F6I.csv
+cp ./Results/Raw_DataFiles/wtresults043021FcAc1i/pararesults099.csv ./sheller_files/F1I.csv
+
+
+011322
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcM4.model scaledinit0p1.init results042721FcAcM0 042721FcAcM0
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcM4.model scaledinit0p25.init results042721FcAcM1 042721FcAcM1
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcM4.model scaledinit0p5.init results042721FcAcM2 042721FcAcM2
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcM4.model scaledinit1p5.init results042721FcAcM3 042721FcAcM3
+
+
+
+sbatch meristembasicCommandScriptRemote.sh ./parameterfiles/042721/parameterlist042721FcAcM4.model scaledinit2.init results042721FcAcM5 042721FcAcM5
+
+cp ./Results/Raw_DataFiles/wtresults042721FcAcM0/pararesults099.csv ./sheller_files/FM0.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcM1/pararesults099.csv ./sheller_files/FM1.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcM2/pararesults099.csv ./sheller_files/FM2.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcM3/pararesults099.csv ./sheller_files/FM3.csv
+cp ./Results/Raw_DataFiles/wtresults042721FcAcM5/pararesults099.csv ./sheller_files/FM5.csv
+
+

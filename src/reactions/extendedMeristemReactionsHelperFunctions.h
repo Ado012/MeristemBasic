@@ -23,7 +23,7 @@ struct OverFlowResults {
 
 double Clavata3ActivationMechanisms(int activation, double clv3Creation, double clv3P, int wusMonomer, int wusDimer,
                                     double wusMonomerCoefficient, double wusDimerCoefficient, int chromoCycle, Compartment &compartment,
-                                    double polTimeLimit, int crmOrMarkerSwitch);
+                                    double polTimeLimit, int crmOrMarkerSwitch,double distanceFromCentralAxis, double clv3SourceWidth, double zvar, double clv3Barrier);
 
 
 void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle, probabilitySegment *probabilityMatrix, int *crmOccupancy, int i, double crmActivityCoefficient, double cooptMonEffect, double cooptDimEffect,
