@@ -1,11 +1,11 @@
 parameters: values
 workingFolder_config: /home/ace/Documents/Software_Projects/MeristemBasic/
-sourceFolder_config: /home/ace/Documents/Software_Projects/MeristemBasic/parameterfiles/042021/
-outputFolder_config: /home/ace/Documents/Software_Projects/MeristemBasic/parameterfiles/042821/
-dateDetected: 042021
-dateReplacement: 042821
-phraseDetected: 0.01 #clv3_CooptMonEffect
-phraseReplacement: 0.001 #clv3_CooptMonEffect
+sourceFolder_config: /home/ace/Documents/Software_Projects/MeristemBasic/parameterfiles/051221/
+outputFolder_config: /home/ace/Documents/Software_Projects/MeristemBasic/parameterfiles/051421/
+dateDetected: 051221
+dateReplacement: 051421
+phraseDetected: 20.0 #bindCoopt
+phraseReplacement: 100.0 #bindCoopt
 fileCompared1: parameterlist032621FcAcWt.model
 fileCompared2: parameterlist042021FcAcWt.model
 outputFolder_series: /home/ace/Documents/Software_Projects/MeristemBasic/Results/Raw_DataFiles/

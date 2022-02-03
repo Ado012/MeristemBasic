@@ -987,7 +987,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 CLV3_Dynamics::CLV3_Dynamics(std::vector<double> &paraValue, std::vector< std::vector<size_t> > &indValue )
 {
 	// Do some checks on the parameters and variable indeces
-    if( paraValue.size()!=43 ) {
+    if( paraValue.size()!=44 ) {
 		std::cerr << "CLV3_Dynamics::CLV3_Dynamics() "
                   << "Uses only one parameter k_deg\n"
                   << "parameter(0)" << " 1st parameter "
@@ -1053,6 +1053,7 @@ CLV3_Dynamics::CLV3_Dynamics(std::vector<double> &paraValue, std::vector< std::v
     tmp[40] = "L1nodimer";
     tmp[41] = "bonusL1MonCoopt";
     tmp[42] = "unbindLimit";
+    tmp[43] = "bindCoopt"; //ADDED: 011822
 	setParameterId( tmp );
 }
 
@@ -1087,6 +1088,8 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
     double L1nodimer =parameter(40);
     int bonusL1MonCoopt = parameter(41); //added 122020
     int unbindLimit = parameter(42);
+
+    double bindCoopt = parameter(43); //added 011922
 
 //variables
     double hillvar=y[compartment.index()][variableIndex(0,0)];
@@ -1246,7 +1249,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
                                             i, crmActivityCoefficient, cooptMonEffect, cooptDimEffect,
                                             geneCRMSiteBindMaxBaseChance[i], geneCRMSiteChance_Unbind[i], concModifier, compartment.eventNum[crmOrMarkerSwitch],
                                             compartment.probabilityDeltaSum[crmOrMarkerSwitch],HABonusCoopt,neighborOnlyCoopt, dimerBindP, polBaseBindAffinity,
-                                            compartment, dimerUnbindP[i], L1nodimer, bonusL1MonCoopt, distanceFromCentralBase);
+                                            compartment, dimerUnbindP[i], L1nodimer, bonusL1MonCoopt, distanceFromCentralBase, bindCoopt);
 
                 }
 

@@ -28,7 +28,7 @@ double Clavata3ActivationMechanisms(int activation, double clv3Creation, double 
 
 void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle, probabilitySegment *probabilityMatrix, int *crmOccupancy, int i, double crmActivityCoefficient, double cooptMonEffect, double cooptDimEffect,
                              double geneCRMSiteBindMaxBaseChance, double geneCRMSiteChance_Unbind, double concModifier, int &eventNum, double &probabilityDeltaSum, int HABonusCoopt, int neighborOnlyCoopt, double dimerBindP,
-                             double polBaseBindAffinity, Compartment &compartment, double dimerUnbindP, int L1nodimer, int bonusL1MonCoopt, double distanceFromBase);
+                             double polBaseBindAffinity, Compartment &compartment, double dimerUnbindP, int L1nodimer, int bonusL1MonCoopt, double distanceFromBase, double bindCoopt);
 
 
 

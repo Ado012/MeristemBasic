@@ -106,7 +106,7 @@ double Clavata3ActivationMechanisms(int activation, double clv3Creation, double 
 void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle, probabilitySegment *probabilityMatrix, int *crmOccupancy, int i, double crmActivityCoefficient,
                              double cooptMonEffect, double cooptDimEffect, double geneCRMSiteBindMaxBaseChance, double geneCRMSiteChance_Unbind, double concModifier, int& eventNum,
                              double& probabilityDeltaSum, int HABonusCoopt, int neighborOnlyCoopt, double dimerBindP, double polBaseBindAffinity, Compartment &compartment, double dimerUnbindP,
-                             int L1nodimer, int bonusL1MonCoopt, double distanceFromBase)
+                             int L1nodimer, int bonusL1MonCoopt, double distanceFromBase, double bindCoopt)
 {
 
     //1: CRMProbabilityGenerator: For each site calculate event probabilities based on binding constant, site state, concentration, and site's base affinity
@@ -130,6 +130,7 @@ void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle,
     //int *arraysize=crmOccupancy.size();
     int sampArray[5]={crmOccupancy[0],crmOccupancy[1],crmOccupancy[2],crmOccupancy[3],crmOccupancy[4]};
     int chromoCycleBonus=0;
+    double bindBonus = 1;
 
     if (crmOrMarkerSwitch == 1)
         chromoCycleBonus = 2;
@@ -139,13 +140,18 @@ void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle,
     //probabilityMatrix[eventNum].chromosome=chromoCycle; source of probabilityMatrix tagging bug?
 
 
-
+    for (int occI = 0; occI <= 4; occI++)
+    {
+    if (crmOccupancy[occI]==1 && i != occI)//bonusbind effect for monomer bound
+       { bindBonus=bindCoopt;
+        break;}
+    }
 
 
     //3: Empty Site Probability Generation: if site is empty, a binding event can occur
     if (crmOccupancy[i]==0)
     {//3b: calculate chance to bind
-        eventChance=crmActivityCoefficient*geneCRMSiteBindMaxBaseChance*concModifier;
+        eventChance=crmActivityCoefficient*geneCRMSiteBindMaxBaseChance*concModifier*bindBonus;
 
 
         if (eventChance > 0)//3c: set event on probability spectrum
@@ -169,7 +175,7 @@ void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle,
     //4: Monomer Occupied Probability Generation: if site is monomer occupied, a binding or unbinding event can occur.
     else if (crmOccupancy[i]==1 )
     {//4b: Bind Calculation: calculate chance to bind
-        eventChance= crmActivityCoefficient*geneCRMSiteBindMaxBaseChance*concModifier*dimerBindP;
+        eventChance= crmActivityCoefficient*geneCRMSiteBindMaxBaseChance*concModifier*dimerBindP*bindBonus;
 //if L1nodimer is activated. No dimerization in L1
         if ((eventChance > 0 && L1nodimer == 0) || (eventChance > 0 && L1nodimer == 1 && distanceFromBase < 8.5))
         {//4c: add bind event to probability matrix
