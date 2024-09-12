@@ -1007,10 +1007,174 @@ class DiffusionSimple : public BaseReaction {
 };
 
 
+//////////////////////////////////////////////////////////////
 
 
 
 
+class DiffusionSimpleCLV3Reg : public BaseReaction {
+
+ public:
+
+  ///
+  /// @brief Main constructor
+  ///
+  /// This is the main constructor which sets the parameters and variable
+  /// indices that defines the reaction.
+  ///
+  /// @param paraValue vector with parameters
+  ///
+  /// @param indValue vector of vectors with variable indices
+  ///
+  /// @see BaseReaction::createReaction(std::vector<double> &paraValue,...)
+  ///
+  DiffusionSimpleCLV3Reg(std::vector<double> &paraValue,
+          std::vector< std::vector<size_t> > &indValue );
+
+  ///
+  /// @brief Derivative function for this reaction class
+  ///
+  /// @see BaseReaction::derivs(Compartment &compartment,size_t species,...)
+  ///
+  void derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt);
+
+  ///
+  /// @brief Derivative function for this reaction class calculating the absolute value for noise solvers
+  ///
+  /// @see BaseReaction::derivsWithAbs(Compartment &compartment,size_t species,...)
+  ///
+
+};
+
+
+//////////////////////////////////////////////////////////////
+
+
+///
+/// @brief The class Diffusion is a diffusion update including topological properties
+///
+/// Generates a diffusion update where the topological properties such as
+/// volumes are taken into account according to:
+///
+/// @f[ \frac{dy_{ij}}{dt} = \frac{A_n}{d_n} D (y_{nj}-y_{ij})/V_i @f]
+///
+/// and
+///
+/// @f[ \frac{dy_{nj}}{dt} = \frac{A_n}{d_n} D (y_{nj}-y_{ij})/V_n. @f]
+///
+/// where \e j is the molecular index. The update only applies if the neighbor
+/// index \e n is larger than \e i. The update needs the size index as a
+/// variable index (V_i,V_n). If applicable the A_n and d_n is the cross
+/// section area and distance between the compartments.
+///
+class Diffusion : public BaseReaction {
+
+ public:
+
+  ///
+  /// @brief Main constructor
+  ///
+  /// This is the main constructor which sets the parameters and variable
+  /// indices that defines the reaction.
+  ///
+  /// @param paraValue vector with parameters
+  ///
+  /// @param indValue vector of vectors with variable indices
+  ///
+  /// @see BaseReaction::createReaction(std::vector<double> &paraValue,...)
+  ///
+  Diffusion(std::vector<double> &paraValue,
+        std::vector< std::vector<size_t> > &indValue );
+
+  ///
+  /// @brief Derivative function for this reaction class
+  ///
+  /// @see BaseReaction::derivs(Compartment &compartment,size_t species,...)
+  ///
+  void derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt);
+};
+
+///
+/// @brief The class DiffusionSimple represents the simplest diffusion update
+/// NOT including topological properties
+///
+/// Generates a diffusion update where NO topological properties such as
+/// volumes are taken into account according to:
+///
+/// @f[ \frac{dy_{ij}}{dt} = D (y_{nj}-y_{ij}) @f]
+///
+/// and
+///
+/// @f[ \frac{dy_{nj}}{dt} = D (y_{nj}-y_{ij}) @f]
+///
+/// where \e j is the molecular index. The update only applies if the neighbor
+/// index \e n is larger than \e i.
+///
+
+
+//////////////////////////////////////////////////////////////
+
+
+///
+/// @brief The class Diffusion is a diffusion update including topological properties
+///
+/// Generates a diffusion update where the topological properties such as
+/// volumes are taken into account according to:
+///
+/// @f[ \frac{dy_{ij}}{dt} = \frac{A_n}{d_n} D (y_{nj}-y_{ij})/V_i @f]
+///
+/// and
+///
+/// @f[ \frac{dy_{nj}}{dt} = \frac{A_n}{d_n} D (y_{nj}-y_{ij})/V_n. @f]
+///
+/// where \e j is the molecular index. The update only applies if the neighbor
+/// index \e n is larger than \e i. The update needs the size index as a
+/// variable index (V_i,V_n). If applicable the A_n and d_n is the cross
+/// section area and distance between the compartments.
+///
+class DiffusionCLV3Reg : public BaseReaction {
+
+ public:
+
+  ///
+  /// @brief Main constructor
+  ///
+  /// This is the main constructor which sets the parameters and variable
+  /// indices that defines the reaction.
+  ///
+  /// @param paraValue vector with parameters
+  ///
+  /// @param indValue vector of vectors with variable indices
+  ///
+  /// @see BaseReaction::createReaction(std::vector<double> &paraValue,...)
+  ///
+  DiffusionCLV3Reg(std::vector<double> &paraValue,
+        std::vector< std::vector<size_t> > &indValue );
+
+  ///
+  /// @brief Derivative function for this reaction class
+  ///
+  /// @see BaseReaction::derivs(Compartment &compartment,size_t species,...)
+  ///
+  void derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt);
+};
+
+///
+/// @brief The class DiffusionSimple represents the simplest diffusion update
+/// NOT including topological properties
+///
+/// Generates a diffusion update where NO topological properties such as
+/// volumes are taken into account according to:
+///
+/// @f[ \frac{dy_{ij}}{dt} = D (y_{nj}-y_{ij}) @f]
+///
+/// and
+///
+/// @f[ \frac{dy_{nj}}{dt} = D (y_{nj}-y_{ij}) @f]
+///
+/// where \e j is the molecular index. The update only applies if the neighbor
+/// index \e n is larger than \e i.
+///
 
 
 

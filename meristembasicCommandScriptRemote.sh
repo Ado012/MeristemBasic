@@ -13,7 +13,7 @@
 
 #MODEL INIT OUTPUT
 
-./build-MeristemBasic_Debug/MeristemBasic $1 $2 rk6 > $3
+./build-MeristemBasic_Debug/MeristemBasic $1 $2 rk7 > $3
 
 mv $3 ./Results/Raw_DataFiles/
 

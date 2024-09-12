@@ -84,6 +84,12 @@ BaseReaction::createReaction(std::vector<double> &paraValue,
         return new CkLigand_Dynamics(paraValue,indValue);
     else if(boost::iequals(idValue,"ckComplex_Dynamics"))
         return new CkComplex_Dynamics(paraValue,indValue);
+    else if(boost::iequals(idValue,"diffusionSimpleCLV3Reg")) //Added 092122 updated 041223
+        return new DiffusionSimpleCLV3Reg(paraValue,indValue);
+    else if(boost::iequals(idValue,"diffusion")) //Added 092122
+        return new Diffusion(paraValue,indValue);
+    else if(boost::iequals(idValue,"diffusionCLV3Reg")) //Added 092122
+        return new DiffusionCLV3Reg(paraValue,indValue);
 
     //Mass action types of reactions
     //massAction.h,massAction.cc

@@ -50,3 +50,5 @@ HEADERS += \
     src/solvers/rungeKutta.h \
     src/species.h \
     src/topology.h
+
+INCLUDEPATH += /home/ace/Documents

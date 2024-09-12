@@ -1,0 +1,696 @@
+#!/usr/bin/python3
+# Model Configuration
+# Include standard modules
+import argparse
+import os  # directory navigation
+import glob  # file search
+import re  # re for partial name changes.
+import fileinput  # file readin and replacement
+from datetime import datetime
+import pandas as pd
+
+import shutil #moving files
+
+from sys import argv
+import fnmatch
+
+
+def ModelConfiguration(
+    workingFolder_config,
+    sourceFolder_config,
+    outputFolder_config,
+    titleDetected,
+    titleReplacement,
+    phraseDetected,
+    phraseReplacement,
+    lineInsert,
+    lineToAlter,
+    fileCompared1,
+    fileCompared2,
+):
+    # File List, and command List
+
+    # create parser
+    # parser = argparse.ArgumentParser()
+
+    # add arguments to the parser
+    # parser.add_argument("sourceFolder")
+    # parser.add_argument("workingFolder")
+    # parser.add_argument("titleDetected")
+    # parser.add_argument("titleReplacement")
+    # parser.add_argument("phraseDetected")
+    # parser.add_argument("phraseReplacement")
+    # parser.add_argument("fileCompared1")
+    # parser.add_argument("fileCompared2")
+
+    # args = parser.parse_args()
+    selection = 0
+
+    while selection < 9:
+
+        print("1. Transfer Files")
+        print("2. Delete Files")
+        print("3. Filename Change: " + titleDetected + " " + titleReplacement)
+        print("4. Parameter Change: " + phraseDetected + " " + phraseReplacement)
+        print("5. Insert Line: " + lineInsert + " " + lineToAlter)
+        print(
+            "6. Change Source and Working Folder: "
+            + sourceFolder_config
+            + " "
+            + outputFolder_config
+        )
+        print("7. Working Folder Contents")
+        print("8. Model Consistency: " + fileCompared1 + " " + fileCompared2)
+        print("9. Annotation")
+        print("10. Go back")
+
+        selection = int(input())
+
+        if selection == 1:
+
+            print(
+                "Source and Working Folder:"
+                + sourceFolder_config
+                + workingFolder_config
+            )  # transfer files
+            os.chdir(sourceFolder_config)
+            if not os.path.exists(outputFolder_config):
+                os.makedirs(outputFolder_config)
+            for file in glob.glob("*.model"):
+                shutil.copy(sourceFolder_config + file, outputFolder_config + file)
+            print("Transfer completed")
+
+        elif selection == 2:
+            # Delete Files unfinished
+            os.chdir(outputFolder_config)
+            for file in glob.glob("*.model"):
+                print(file)
+
+        elif selection == 3:
+            # Date/title change
+            titleSelection = 0
+            while titleSelection < 3:
+                print("Rename Model Files")
+                print("Output Folder: " + outputFolder_config)
+                print("1. Process Title Change")
+                print(
+                    "2. Change Title to Detect and Replace: "
+                    + titleDetected
+                    + " "
+                    + titleReplacement
+                )
+                print("3. Go back")
+
+                titleSelection = int(input())
+                if titleSelection == 1:
+                    # process title change
+                    os.chdir(outputFolder_config)
+                    for file in glob.glob("*.model"):
+                        titleAltered = re.sub(titleDetected, titleReplacement, file)
+                        print("words" + titleDetected + " " + titleReplacement + " " + file + " " + titleAltered)
+                        os.rename(file, titleAltered)
+                    print("Title Change completed")
+                elif titleSelection == 2:  # title replacement values
+                    titleDetected, titleReplacement = input(
+                        "Enter the title you wish to replace and its replacement title: "
+                    ).split()
+
+        elif selection == 4:
+            # Parameter change
+            parameterSelection = 0
+            while parameterSelection < 5:
+                print("Output Directory: " + outputFolder_config)
+                print("1. Change Parameter")
+                print("2. List Model File")
+                print(
+                    "3. Change Detected and Replacement Phrase: "
+                    + phraseDetected
+                    + " "
+                    + phraseReplacement
+                )
+                print("4. Parameter Presence Check: " + phraseReplacement)
+                print("5. Go back")
+
+                parameterSelection = int(input())
+
+                if parameterSelection == 1:  # change parameter
+                    os.chdir(outputFolder_config)
+                    for file in glob.glob("*.model"):
+                        # Read in the file
+                        with fileinput.FileInput(file, inplace = True, backup = '.bak' ) as file:
+                            # Replace the target string
+                            for line in file: 
+                                print(line.replace(phraseDetected, phraseReplacement), end = '')
+
+                elif parameterSelection == 2:  # list model file
+                    fileSelected = input("Enter the file you want to look at: ")
+                    for line in fileSelected:
+                        print(line)
+
+                elif parameterSelection == 3:  # change parameter to find and change
+                    phraseDetected, phraseReplacement = input(
+                        "Enter the parameterline you wish to replace and its replacement line: "
+                    ).split()
+
+                elif parameterSelection == 4:  # parameter presence check
+
+                    print("Looking for " + phraseReplacement)
+                    os.chdir(outputFolder_config)
+                    for file in glob.glob("*.model"):
+                        with open(file) as f:
+                            if phraseReplacement in f.read():
+                                print(file + "phrase found")
+                            else:
+                                print(file + "nothing found")
+
+
+        elif selection == 5:
+        # insert line
+            os.chdir(outputFolder_config)
+            for file in glob.glob("*.model"):
+               filePathToAnalyze = str(outputFolder_config + file)
+               with open( filePathToAnalyze, "r") as file2:
+                        # Read in the file
+                  contents = file2.readlines()
+                  print(lineToAlter)
+                  print(lineInsert)
+
+                  contents.insert(int(lineToAlter), lineInsert + '\n')
+
+                  with open(filePathToAnalyze, "w") as file2:
+                     contents = "".join(contents)
+                     file2.write(contents)
+         
+
+
+        elif selection == 6:
+            # Folder change
+            sourceFolder_config, workingFolder_config = input(
+                "Enter your source and working folders: "
+            ).split()
+
+        elif selection == 7:  # List output folder contents
+            print(os.listdir(outputFolder_config))
+            print("Done listing folder contents")
+
+        elif selection == 8:
+            # Model consistency check
+            print("Model file consistency Check")
+            print("Files to be compared: " + fileCompared1 + fileCompared2)
+            changeComparison = input(
+                "Do you wish to change the file comparison? Y or N : "
+            )
+
+            if changeComparison == "Y":
+                fileCompared1, fileCompared2 = input(
+                    "Enter files you wish to compare: "
+                ).split()
+
+
+            os.chdir(outputFolder_config)
+
+            # reading files
+            f1 = open(fileCompared1, "r")
+            f2 = open(fileCompared2, "r")
+
+            i = 0
+
+            for line1 in f1:
+                i += 1
+
+                for line2 in f2:
+
+                    # matching line1 from both files
+                    if line1 == line2:
+                        # print IDENTICAL if similar
+                        print("Line ", i, ": IDENTICAL")
+                    else:
+                        # print("Line ", i, ":")
+                        # else print that line from both files
+                        print("\tFile 1:", line1, end='')
+                        print("\tFile 2:", line2, end='')
+                    break
+
+                    # closing files
+            f1.close()
+            f2.close()
+
+        elif selection == 9:
+            # Model Annotation
+            os.chdir(outputFolder_config)
+
+
+            fileAnnotation = open("annotation.txt", "a")
+            annotation = input("Annotate the changes you are making: ")
+            now = datetime.now()
+            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+            combinedAnnotation = dt_string + annotation
+            fileAnnotation.writelines(combinedAnnotation)
+            fileAnnotation.close()
+
+
+# Parameter File Restructure Agnostic
+
+
+def SimCommandGenerator(outputFolder_config):
+
+    selection = 0
+    while selection < 3:
+        print("Generate Command List ")
+        print("1. Generate List")
+        print("2. Change working folder" + outputFolder_config)
+        print("3. Go back")
+
+        selection = int(input())
+        if selection == 1:
+            # process title change
+            os.chdir(outputFolder_config)
+            print("test")
+            print(outputFolder_config)
+
+            j = 0
+            k = 0
+            frozenList = []
+            dynamicList = []
+
+            for file in glob.glob("*.model"):
+                dynamicflag = 0
+                choppedfile = file[13:]  # remove parameterlist
+                if choppedfile[0] == "_":
+                    dynamicflag = 1
+                    choppedfile = choppedfile.split(
+                        "_"
+                    )  # remove _ in those that need it
+                    choppedfile = choppedfile[1]
+
+                choppedfile_datesettingextension = choppedfile.split(".")  # remove .model
+                choppedfile_datesetting = choppedfile_datesettingextension[0]
+                choppedfile_date = choppedfile_datesetting[0:6]
+                print(choppedfile_date)
+                # chunk size
+                #n = 6
+
+                #chunks = [choppedfile2[i : i + n] for i in range(0, len(choppedfile2), n)]
+
+                if dynamicflag == 0:
+                    frozenEntry = "sbatch mersimCommandScriptRemote.sh ./parameterfiles/{1}/parameterlist{0}.model StandardSteadyStateWUSGradient01272A.init results{0} {0}".format(choppedfile_datesetting, choppedfile_date)
+                    frozenList.append(frozenEntry)
+                    j = j + 1
+                    
+
+                else:
+                    dynamicEntry = "sbatch mersimCommandScriptRemote.sh ./parameterfiles/{1}/parameterlist_{0}.model StandardSteadyStateWUSGradientEmpty.init results{0} {0}".format(choppedfile_datesetting, choppedfile_date)
+                    dynamicList.append(dynamicEntry)
+                    k = k + 1
+            if j > 0:
+                   for entry in frozenList:
+                        print(entry)
+            if k > 0:
+                   for entry in dynamicList:
+                        print(entry)
+
+        elif selection == 2:
+            outputFolder_config = input("Enter the folder you want to look at: ")
+
+        else:
+            print("blah")
+            print(selection)
+            break
+
+import csv
+
+
+def SeriesGenerator(outputFolder_series):
+
+    selection = 0
+    
+    while selection < 4:
+        print("1. Process Raw Results Files into Series Files")
+        print("2. Change output folder" + outputFolder_series)
+        print("3. Go back")
+
+        selection = int(input())
+        os.chdir(workingFolder_config)
+
+        titleline = "x y z radius WUSRNA WUSNuc_WS WUSCyto CLV3Sig1 CLV3_Peptide StochasticTimeOverFlow CLV3Sig2 MarkerOverFlow Monomer Dimer MonomerMarker DimerMarker ckReceptor ckLigand ckComplex WExport neighbors?"
+
+        for file in glob.glob("results*"): #will process and overwrite all results files
+            #print(file)  
+            #print(os.getcwd())
+            os.chdir(workingFolder_config)
+            with open(file,'r') as sourcefile:
+                 lines = sourcefile.readlines()
+
+            seriesFileCount = 1
+            lineCount = 2 # to skip beginning lines of result file
+
+            choppedname = file[7:19]  # remove results and date from input file to create a destination folder
+            
+            path = outputFolder_series + "wtresults" + choppedname + "/"
+
+            if os.path.exists(path) == False:
+                os.mkdir(path)
+
+
+            while seriesFileCount < 100:
+                print(file)
+                print(lineCount)
+
+
+
+                if seriesFileCount < 10:
+                    seriesFileName = "pararesults00" + str(seriesFileCount) + ".csv"
+
+                elif seriesFileCount == 10 or seriesFileCount < 100:
+                    seriesFileName = "pararesults0" + str(seriesFileCount) + ".csv"
+                 
+                os.chdir(path)
+
+                with open(seriesFileName,'w') as writefile:
+                    writefile.write(titleline + "\n")
+                    for line in lines[lineCount:(lineCount + 1366)]:
+                        writefile.write(line)
+                
+
+                os.chdir(outputFolder_series)
+                lineCount = lineCount + 1366 + 2 #remove section header 
+                seriesFileCount = seriesFileCount + 1
+             
+            shutil.move(workingFolder_config + file, outputFolder_series + file)
+
+
+
+def ParaviewLoader(
+    date_paraview,
+    inputFolder_paraview,
+    clv3aMax,
+    clv3bMax,
+    clv3pMax,
+    dimerMax,
+    monomerMax,
+    wusCMax,
+    wusNMax,
+    wusRMax,
+):
+
+    # Alters Pic taking scripts with rescaling factors and date
+
+    # Prep for image taking
+
+    clv3ARescale = "RescaleTransferFunction(0.0" + clv3aMax + ")"
+
+    clv3BRescale = "RescaleTransferFunction(0.0" + clv3bMax + ")"
+
+    clv3PRescale = "RescaleTransferFunction(0.0" + clv3pMax + ")"
+
+    dimerRescale = "RescaleTransferFunction(0.0" + dimerMax + ")"
+
+    monomerRescale = "RescaleTransferFunction(0.0" + monomerMax + ")"
+
+    wusCRescale = "RescaleTransferFunction(0.0" + wusCMax + ")"
+
+    wusNRescale = "RescaleTransferFunction(0.0" + wusNMax + ")"
+
+    wusRRescale = "RescaleTransferFunction(0.0" + wusRMax + ")"
+
+    inputfile = "paraviewAutoM7.py"
+
+    # Read in the file
+    with open(inputfile, "r") as file:
+        filedata = file.read()
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 1.0)", clv3ARescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 2.0)", clv3BRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 3.0)", clv3PRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 4.0)", dimerRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 5.0)", monomerRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 6.0)", wusCRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 7.0)", wusNRescale)
+
+    # Replace the target string
+    filedata = filedata.replace("RescaleTransferFunction(0.0, 8.0)", wusRRescale)
+
+    for file in inputFolder_paraview:
+
+        if fnmatch.fnmatch(file, "date_paraview*"):
+            modelName = file[0:5]
+            modelDate = file[6:11]
+
+            # Read in the file
+            with open(inputfile, "r") as file:
+                filedata = file.read()
+
+            # Replace the target string
+            filedata = filedata.replace("021121DcTrWt", modelName + modelDate)
+            filedata = filedata.replace("021121FcAcWt", modelName + modelDate)
+
+            outputfile = "paraviewAutoM7Temp.py"
+
+            # Write the file out again
+            with open(outputfile, "w+") as file:
+                file.write(filedata)
+
+            os.system("pvpython paraviewAutoM7Temp.py")
+
+
+def Grapher(datemodel, sourceFolder_graph, outputFolder_graph, speciesGraphList):
+
+    os.chdir(sourceFolder_graph)
+    for file in glob.glob("datemodel*"):
+
+        choppedname = file[0:5]  # remove results and date
+
+        if choppedname == "FcAcWt":
+            outputFile = "FWT.csv"
+
+        elif choppedname == "FcAcMd":
+            outputFile = "FMD.csv"
+
+        elif choppedname == "FcAcM4":
+            outputFile = "FM4.csv"
+
+        elif choppedname == "FcAcTm":
+            outputFile = "FTM.csv"
+
+        elif choppedname == "FcAc9i":
+            outputFile = "F9I.csv"
+
+        elif choppedname == "FcAc5i":
+            outputFile = "F5I.csv"
+
+        elif choppedname == "FcAc5i":
+            outputFile = "FMI.csv"
+
+        elif choppedname == "FcAcCm":
+            outputFile = "FCM.csv"
+
+        if choppedname == "DcTrWt":
+            outputFile = "DWT.csv"
+
+        elif choppedname == "DcTrMd":
+            outputFile = "DMD.csv"
+
+        elif choppedname == "DcTrM4":
+            outputFile = "DM4.csv"
+
+        elif choppedname == "DcTrTm":
+            outputFile = "DTM.csv"
+
+        elif choppedname == "DcTr9i":
+            outputFile = "D9I.csv"
+
+        elif choppedname == "DcTr5i":
+            outputFile = "D5I.csv"
+
+        elif choppedname == "DcTr5i":
+            outputFile = "DMI.csv"
+
+        elif choppedname == "DcTrCm":
+            outputFile = "DCM.csv"
+
+        else:
+            print("invalid name")
+
+        modelName = datemodel + choppedName
+
+        os.rename(
+            workingFolder + "/" + modelName + "/" + "pararesults099.csv",
+            outputFolder_graph + outputFile,
+        )
+
+        outputFolder_graph_quoted = '"' + outputFolder_graph + '"'
+
+        if speciesGraph == 1:
+            os.system("Rscript --vanilla ./clv3Graph.R " + outputFolder_graph_quoted)
+        # os.system("Rscript --vanilla ./clv3Graph.R "./Results/Raw_DataFiles/results$2" "./Results/Raw_DataFiles/wtresults$2"")
+
+
+
+def ExtraSeriesGenerator(outputFolder_series):
+
+    selection = 0
+    
+    while selection < 4:
+        print("1. Process Raw Extra Results Files into Series Files")
+        print("2. Change output folder" + outputFolder_series)
+        print("3. Go back")
+
+        selection = int(input())
+        os.chdir(workingFolder_config)
+
+        titleline = "x y z monBind dimBind polfire"
+
+        for file in glob.glob("extraot*"): #will process and overwrite all results files
+            #print(file)  
+            #print(os.getcwd())
+            os.chdir(workingFolder_config)
+            with open(file,'r') as sourcefile:
+                 lines = sourcefile.readlines()
+
+            seriesFileCount = 1
+            lineCount = 0 # to skip beginning lines of result file
+
+            choppedname = file[7:19]  # remove results and date from input file to create a destination folder
+            
+            path = outputFolder_series + "extraresults" + choppedname + "/"
+
+            if os.path.exists(path) == False:
+                os.mkdir(path)
+
+
+            while seriesFileCount <= 100:
+                print(file)
+                print(lineCount)
+
+
+
+                if seriesFileCount < 10:
+                    seriesFileName = "extraresults00" + str(seriesFileCount) + ".csv"
+
+                elif seriesFileCount == 10 or seriesFileCount < 100:
+                    seriesFileName = "extraresults0" + str(seriesFileCount) + ".csv"
+                 
+                os.chdir(path)
+
+                with open(seriesFileName,'w') as writefile:
+                    writefile.write(titleline + "\n")
+                    for line in lines[lineCount:(lineCount + 1366)]:
+                        writefile.write(line)
+                
+
+                os.chdir(outputFolder_series)
+                lineCount = lineCount + 1366 + 1 #remove section header 
+                seriesFileCount = seriesFileCount + 1
+             
+            shutil.move(workingFolder_config + file, outputFolder_series + file)
+
+
+
+
+
+
+
+configFile = pd.read_csv("mersimconfig", sep=": ", engine = 'python')
+
+workingFolder_config = configFile.iat[0, 1]
+sourceFolder_config = configFile.iat[1, 1]
+outputFolder_config = configFile.iat[2, 1]
+titleDetected = configFile.iat[3, 1]
+titleReplacement = configFile.iat[4, 1]
+phraseDetected = configFile.iat[5, 1]
+phraseReplacement = configFile.iat[6, 1]
+phraseDetected = configFile.iat[5, 1]
+phraseReplacement = configFile.iat[6, 1]
+
+lineInsert = configFile.iat[7, 1]
+lineToAlter = configFile.iat[8, 1]
+
+fileCompared1 = configFile.iat[9, 1]
+fileCompared2 = configFile.iat[10, 1]
+
+outputFolder_series = configFile.iat[11, 1]
+
+datemodel = configFile.iat[12, 1]
+inputFolder_paraview = configFile.iat[13, 1]
+clv3aMax = configFile.iat[14, 1]
+clv3bMax = configFile.iat[15, 1]
+clv3pMax = configFile.iat[16, 1]
+monomerMax = configFile.iat[17, 1]
+dimerMax = configFile.iat[18, 1]
+wusCMax = configFile.iat[19, 1]
+wusNMax = configFile.iat[20, 1]
+wusRMax = configFile.iat[21, 1]
+
+sourceFolder_graph = configFile.iat[22, 1]
+outputFolder_graph = configFile.iat[23, 1]
+speciesGraphList = configFile.iat[24, 1]
+
+selection = 0
+
+
+while selection < 7:
+
+    print("1. ModelConfiguration")
+    print("2. Simulation Command Generator")
+    print("3. Time Series Generation")
+    print("4. Paraview Loader")
+    print("5. Grapher")
+    print("6. Extra Results Time Series Generation")
+
+    selection = int(input())
+    os.chdir(workingFolder_config)
+
+    if selection == 1:
+        ModelConfiguration(
+            workingFolder_config,
+            sourceFolder_config,
+            outputFolder_config,
+            titleDetected,
+            titleReplacement,
+            phraseDetected,
+            phraseReplacement,
+            lineInsert,
+            lineToAlter,
+            fileCompared1,
+            fileCompared2,
+        )
+
+    elif selection == 2:
+        SimCommandGenerator(outputFolder_config)
+
+    elif selection == 3:
+        SeriesGenerator(outputFolder_series)
+
+    elif selection == 4:
+        ParaviewLoader(
+            date_paraview,
+            inputFolder_paraview,
+            clv3aMax,
+            clv3bMax,
+            clv3pMax,
+            dimerMax,
+            monomerMax,
+            wusCMax,
+            wusNMax,
+            wusRMax,
+        )
+
+    elif selection == 5:
+        Grapher(datemodel, sourceFolder_graph, outputFolder_graph, speciesGraphList)
+
+    elif selection == 6:
+        ExtraSeriesGenerator(outputFolder_series)
+

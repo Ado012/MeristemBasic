@@ -1017,7 +1017,7 @@ CLV3_Dynamics::CLV3_Dynamics(std::vector<double> &paraValue, std::vector< std::v
     tmp[5] = "crmActivityCoefficient";
     tmp[6] = "clv3SourceWidth";
     tmp[7] = "timeStep";
-    tmp[8] = "satpoint";
+    tmp[8] = "wusSatpoint";
     tmp[9] = "cooptMonEffect";
     tmp[10] = "cooptDimEffect";
 
@@ -1032,19 +1032,19 @@ CLV3_Dynamics::CLV3_Dynamics(std::vector<double> &paraValue, std::vector< std::v
     tmp[19] = "unbind4";
     tmp[20] = "unbind5";
     tmp[21] = "activationOnlyFlag";
-    tmp[22] = "clv3Barrier";
-    tmp[23] = "activation";
+    tmp[22] = "clv3ZAxisLimit";
+    tmp[23] = "clv3ActivateMethod";
     tmp[24] = "suppressDecay";
     tmp[25] = "FrozenWus";
     tmp[26] = "CRMorMarkerSwitch";
     tmp[27] = "crmTimerLength";
     tmp[28] = "m4Flag";
-    tmp[29] = "970BonusCoopt";
+    tmp[29] = "HACisEleBonusCoopt";
     tmp[30] = "neighborOnlyCoopt";
-    tmp[31] = "dimerBindP";
+    tmp[31] = "dimerBonusBindP";
     tmp[32] = "polBaseBindAffinity";
     tmp[33] = "polTimeLimit";
-    tmp[34] = "monFireLimit";
+    tmp[34] = "monRecruitLimit";
     tmp[35] = "dimerUnbindP1";
     tmp[36] = "dimerUnbindP2";
     tmp[37] = "dimerUnbindP3";
@@ -1052,7 +1052,7 @@ CLV3_Dynamics::CLV3_Dynamics(std::vector<double> &paraValue, std::vector< std::v
     tmp[39] = "dimerUnbindP5";
     tmp[40] = "L1nodimer";
     tmp[41] = "bonusL1MonCoopt";
-    tmp[42] = "unbindLimit";
+    tmp[42] = "monResidenceTime";
 	setParameterId( tmp );
 }
 
@@ -1067,29 +1067,29 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
     double clv3SourceWidth=parameter(6);
     double timeStep=parameter(7);
-    double satpoint=parameter(8);
+    double wusSatpoint=parameter(8);
     double cooptMonEffect= parameter(9);
     double cooptDimEffect= parameter(10);
     double activationOnlyFlag= parameter(21);
-    double clv3Barrier=parameter(22);
-    double activation=parameter(23);
+    double clv3ZAxisLimit=parameter(22);
+    double clv3ActivateMethod=parameter(23);
     double suppressDecay=parameter(24);
     double frozenWUS=parameter(25);
     int crmOrMarkerSwitch=parameter(26);
-    int crmTimerLength=parameter(27);
+    int crmTimerLength=parameter(27); //remove no longer used
     int m4Flag=parameter(28);
-    int HABonusCoopt=parameter(29);
+    int HACisEleBonusCoopt=parameter(29);
     int neighborOnlyCoopt=parameter(30);
     double polBaseBindAffinity=parameter(32);
     double polTimeLimit=parameter(33);
-    int monFireLimit=parameter(34);
+    int monRecruitLimit=parameter(34);
 
     double L1nodimer =parameter(40);
     int bonusL1MonCoopt = parameter(41); //added 122020
-    int unbindLimit = parameter(42);
+    int monResidenceTime = parameter(42);
 
 //variables
-    double hillvar=y[compartment.index()][variableIndex(0,0)];
+    double wusNucVar=y[compartment.index()][variableIndex(0,0)];
     double xvar=y[compartment.index()][variableIndex(0,1)];
     double yvar=y[compartment.index()][variableIndex(0,2)];
     double zvar=y[compartment.index()][variableIndex(0,3)];
@@ -1118,7 +1118,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
     double wusMonomerCoefficient=parameter(1);
     double wusDimerCoefficient=parameter(2);
         double crmActivityCoefficient=parameter(5);
-        double dimerBindP=parameter(31);
+        double dimerBonusBindP=parameter(31);
 
         double dimerUnbindP [5] ={parameter(35), parameter(36), parameter(37), parameter(38), parameter(39)};//modify later
 
@@ -1151,7 +1151,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 
     //seed pseudorandom num.
-    //select from Mer Twist
+    //select from Mer Twist (Bam!)
 
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -1159,9 +1159,49 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 //do you need to adjust distribution to current timestep size?
     std::uniform_real_distribution<double> dist(0,1);
 
+    //Addition 051222  Monomer/Dimer bind accumulation tracking code
+        std::ofstream extraOutputFile;//file testing
+
+        std::string extraOutputNamePt1 = compartment.organism()->filename_;
+        std::string extraOutputNamePt2 = "extraot";
+        std::string extraOutputName = extraOutputNamePt2 + extraOutputNamePt1;
+
+
+
+
+
+         if (compartment.index() == 0 && compartment.timer == 0)
+         {
+        extraOutputFile.open (extraOutputName);
+         }
+
+          else
+           extraOutputFile.open (extraOutputName, std::fstream::app);
+
+
+        if (compartment.organism()->simPrintFlag == 1)
+        {
+
+            extraOutputFile << xvar << " " << yvar << " " << zvar << " " << compartment.monBindTrack << " " << compartment.dimBindTrack << " " << compartment.polFire << std::endl;
+        }
+
+        //prevents changing of cells for some reason
+        //if (compartment.index() == 0)
+
+
+        if (compartment.index() == 1365 && compartment.organism()->simPrintFlag == 1) //space out meristem timestep results
+        {
+            extraOutputFile << std::endl;
+        }
+
+
+        extraOutputFile.close();
 
     //Check to make control statements don't flow into each other
 
+
+            if (compartment.organism()->stochasticActionFlag ==0) //activate stochastic action once per cycle
+            {timeStepRemain = 0;}
 
 
     int stochasticLoopTrack=0;
@@ -1170,6 +1210,8 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
     OverFlowResults overFlowResults1;
 
+    if (compartment.organism()->stochasticActionFlag != 0) //do not run overflow code if stochastic action has already occured from the time step
+    {
     timeStepOverflow=compartment.stochasticStepOverflow[crmOrMarkerSwitch];
 
     //1b: Advance crm timers, generate activation, and remaining timestep based on overflow
@@ -1178,6 +1220,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
     timeStepRemain= overFlowResults1.timeStepRemain;//gets remaining timestep from timestepoverflowhandler
     clv3Creation += overFlowResults1.clv3;//if 0 overflow than full timestep is given back.
+    }
 
     //2: PreStochastic Loop Safety Checks:
 // check crm occupancy if it is empty
@@ -1192,7 +1235,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 //2b: no going through stochastic loop if low CLV3 concentration and empty CRM
     //this prevents a weakness in the Gillespie algorithm of timesteps spiking to high values due to not much going on in the beginning
-    if (hillvar < 1 && emptyCRM==1)
+    if (wusNucVar < 1 && emptyCRM==1)
     {
         timeStepRemain = 0;
         compartment.previousTimeStep[crmOrMarkerSwitch]=compartment.latestTimeStep[crmOrMarkerSwitch];
@@ -1200,6 +1243,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 
     }
+
 
 
     //3: STOCHASTIC TIMESTEP LOOP: Take stochastic timesteps within ODE timestep
@@ -1210,7 +1254,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 //4. Loop Preparations:
         //concentration affects CRM up to saturation point
         //scale to prevent fractional multiplication and large step sizes
-        concModifier=hillvar/satpoint;
+        concModifier=wusNucVar/wusSatpoint;
 
         if (concModifier>1)
             concModifier=1;
@@ -1245,7 +1289,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
                     CRMProbabilityGenerator(m4Flag, crmOrMarkerSwitch, chromoCycle, compartment.probabilityMatrix, compartment.geneCRM[n],
                                             i, crmActivityCoefficient, cooptMonEffect, cooptDimEffect,
                                             geneCRMSiteBindMaxBaseChance[i], geneCRMSiteChance_Unbind[i], concModifier, compartment.eventNum[crmOrMarkerSwitch],
-                                            compartment.probabilityDeltaSum[crmOrMarkerSwitch],HABonusCoopt,neighborOnlyCoopt, dimerBindP, polBaseBindAffinity,
+                                            compartment.probabilityDeltaSum[crmOrMarkerSwitch],HACisEleBonusCoopt,neighborOnlyCoopt, dimerBonusBindP, polBaseBindAffinity,
                                             compartment, dimerUnbindP[i], L1nodimer, bonusL1MonCoopt, distanceFromCentralBase);
 
                 }
@@ -1277,7 +1321,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
                     eventFlag=CRMEventPicker(compartment.probabilityMatrix[l].site,eventFlag, compartment.probabilityMatrix[l].action,
                                              compartment.probabilityMatrix[l].begin, compartment.probabilityMatrix[l].end,y[compartment.index()][variableIndex(0,0)],randvalue2,
                                              compartment.eventNum[crmOrMarkerSwitch], crmTimerLength, compartment.crmTimer[crmOrMarkerSwitch][compartment.probabilityMatrix[l].site],
-                                             compartment.geneCRM[chromoCycle][compartment.probabilityMatrix[l].site], compartment, chromoCycle, monFireLimit, crmOrMarkerSwitch, polTimeLimit, unbindLimit);
+                                             compartment.geneCRM[chromoCycle][compartment.probabilityMatrix[l].site], compartment, chromoCycle, monRecruitLimit, crmOrMarkerSwitch, polTimeLimit, monResidenceTime);
 
 
 
@@ -1349,8 +1393,8 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 
                 chromoCycle=0;//limit to one chromosome so far
-                clv3Creation +=Clavata3ActivationMechanisms(activation, clv3Creation, clv3P, wusMonomer, wusDimer, wusMonomerCoefficient,
-                                                            wusDimerCoefficient, chromoCycle, compartment, polTimeLimit, crmOrMarkerSwitch, distanceFromCentralAxis, clv3SourceWidth, zvar, clv3Barrier);
+                clv3Creation +=Clavata3ActivationMechanisms(clv3ActivateMethod, clv3Creation, clv3P, wusMonomer, wusDimer, wusMonomerCoefficient,
+                                                            wusDimerCoefficient, chromoCycle, compartment, polTimeLimit, crmOrMarkerSwitch, distanceFromCentralAxis, clv3SourceWidth, zvar, clv3ZAxisLimit);
 
 
 
@@ -1420,20 +1464,12 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
         //contribution=(contribution*timeStep) -clv3Decay;//times contribution by timestep?
         contribution=(contribution) -clv3Decay;
 
-        //do not let concentration go to negative, include timestep modulation?
-        if (y[compartment.index()][varIndex]+contribution < 0 )
-        {
-            y[compartment.index()][varIndex]=0;
-
-        }
-
-        else
-        {//add contribution to derivative
+//add contribution to derivative
 
             dydt[compartment.index()][varIndex] += contribution;
             //y[compartment.index()][varIndex] += contribution;
 
-        }
+        
     }
 
 }
@@ -1593,7 +1629,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 WUSNuc_Dynamics::WUSNuc_Dynamics(std::vector<double> &paraValue, std::vector< std::vector<size_t> > &indValue ) 
 {  
 	// Do some checks on the parameters and variable indeces
-    if( paraValue.size()!=10 ) {
+    if( paraValue.size()!=18 ) {
 		std::cerr << "WUSNuc_Dynamics::WUSNuc_Dynamics() "
 							<< "Uses only one parameter k_deg\n"
 	      << "parameter(0)" << " 1st parameter " 
@@ -1617,14 +1653,23 @@ WUSNuc_Dynamics::WUSNuc_Dynamics(std::vector<double> &paraValue, std::vector< st
 	tmp.resize( numParameter() );
 	  tmp[0] = "wusRNAtransP";
   tmp[1] = "wusNucDegP";
-  tmp[2] = "clv3_wusNucP";
-  tmp[3] = "clv3_wusNucNexp";
+  tmp[2] = "wusNuc_CLV3P";
+  tmp[3] = "wusNuc_CLV3ExP";
   tmp[4] = "wusCytoInP";
   tmp[5] = "wusNucOutP";
   tmp[6] = "freeze";
   tmp[7] = "wusNuc_CkP";
   tmp[8] = "wusNuc_OuterLayerExportP";
   tmp[9] = "wusNuc_StabP";
+  tmp[10] = "wusNuc_StabExP";
+  tmp[11] = "wusNuc_CLV3ElP";
+  tmp[12] = "wusNuc_CkWbP";
+  tmp[13] = "wusNuc_CkExP";
+  tmp[14] = "dmin";
+  tmp[15] = "dmax";
+  tmp[16] = "rmin";
+  tmp[17] = "rmax";
+
   
 	setParameterId( tmp );
 }
@@ -1637,15 +1682,24 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
  
  double wusRNAtransP=parameter(0);
  double wusNucDegP=parameter(1);
- double clv3_wusNucP=parameter(2);
- double clv3_wusNucNexp=parameter(3);
+ double wusNuc_Clv3P=parameter(2);
+ double wusNuc_Clv3ExP=parameter(3);
  double wusCyto_NucP=parameter(4);
  double wusNuc_CytoP=parameter(5);
  double freeze=parameter(6);
  double wusNuc_CkP=parameter(7);
 double wusNuc_OuterLayerExportP=parameter(8);
 double wusNuc_StabP=parameter(9);
- 
+double wusNuc_StabExP=parameter(10);
+double wusNuc_Clv3ElP=parameter(11);
+double wusNuc_CkWbP=parameter(12);
+double wusNuc_CkExP=parameter(13);
+double dmin=parameter(14);
+double dmax=parameter(15);
+double rmin=parameter(16);
+double rmax=parameter(17);
+
+
 
  double xvar=y[compartment.index()][variableIndex(0,0)];
  double yvar=y[compartment.index()][variableIndex(0,1)];
@@ -1687,8 +1741,8 @@ double wusNucVar=y[compartment.index()][varIndex];
     //wusRNAvar*wusRNAtransP-(wusNucDegP*wusNucVar)+compartment.wusP_FromCyto -outerLayerExportMod*((wusNucVar*wusNuc_CytoP)/(1+pow(clv3var/clv3_wusNucP,clv3_wusNucNexp)))/((ckvar*wusNuc_CkP)+1);
 
      wn_Production=wusRNAvar*wusRNAtransP;
-      wn_Degradation=(wusNucDegP*wusNucVar)/(1+pow((wusNucVar/wusNuc_StabP),2));
-      wn_NtoC=((wusNucVar*wusNuc_CytoP)/(1+outerLayerExportMod*pow(clv3var/clv3_wusNucP,clv3_wusNucNexp)))/((ckvar*wusNuc_CkP)+1);
+      wn_Degradation=wusNucDegP*wusNucVar*(dmin+((dmax*dmin)/(1+pow(wusNucVar/wusNuc_StabP,wusNuc_StabExP))));
+      wn_NtoC=wusNucVar*(wusNuc_CytoP/(1+pow((clv3var*wusNuc_Clv3ElP/wusNuc_Clv3P),wusNuc_Clv3ExP)))*(rmin+((rmax-rmin)/(pow((ckvar*wusNuc_CkWbP)/wusNuc_CkP,wusNuc_CkExP)+1)));
        wn_CtoN=compartment.wusP_FromCyto;
 
 contribution= wn_Production - wn_NtoC + wn_CtoN -wn_Degradation;
@@ -1706,7 +1760,9 @@ contribution= wn_Production - wn_NtoC + wn_CtoN -wn_Degradation;
 //compartment.wusP_FromNuc=outerLayerExportMod*((wusNucVar*wusNuc_CytoP)/(1+pow(clv3var/clv3_wusNucP,clv3_wusNucNexp)))/((ckvar*wusNuc_CkP)+1);
 //compartment.wusP_FromNuc=((wusNucVar*wusNuc_CytoP)/(1+outerLayerExportMod*pow(clv3var/clv3_wusNucP,clv3_wusNucNexp)))/((ckvar*wusNuc_CkP)+1);
 //exported wus is now useless
-compartment.wusP_FromNuc=0;
+//compartment.wusP_FromNuc=0;
+//*CHANGE*: 042723 reenable wus to cyto export of viable protein
+compartment.wusP_FromNuc= wn_NtoC;
 
 //old export to cyto term
 //-wusCyto_NucP*y[compartment.index()][varIndex]
@@ -1721,16 +1777,9 @@ compartment.wusP_FromNuc=0;
 
 if (freeze==0)
 {
- if (y[compartment.index()][varIndex]+contribution < 0 && contribution < 0)
-{
-offsetval=y[compartment.index()][varIndex]+contribution;
-dydt[compartment.index()][varIndex] +=contribution-offsetval;
- }
- 
- else
- {
+
   dydt[compartment.index()][varIndex] += contribution; 
-  }
+
 }
 
 
@@ -1813,7 +1862,7 @@ distanceFromCentralBase=sqrt(pow(xvar,2)+pow(yvar,2)+pow(zvar,2));
     //stepper test
              //Create WUSRNA along a central cylinder defined by wusRNASourceWidth except in the L1 layer as defined by underL1Thickness
              if (distanceFromCentralAxis <=wusRnaSourceWidth && distanceFromCentralBase < underL1Thickness && distanceFromCentralBase > WUSRNAbarrier )
- contribution = (wusRnaSourceModP*wusRnaSource)/ ( 1+std::pow((clv3var/clv3_wusRnaP),clv3_wusRnaNexp));
+ contribution = (wusRnaSourceModP*wusRnaSource)/(1+std::pow((clv3var/clv3_wusRnaP),clv3_wusRnaNexp));
  
  //WUSRNA degradation
  contribution -= wusRnaDegP*y[compartment.index()][varIndex];
@@ -1821,19 +1870,9 @@ distanceFromCentralBase=sqrt(pow(xvar,2)+pow(yvar,2)+pow(zvar,2));
 
  if (freeze==0)
  {
-      //if the change will put the species amount below zero
- if (y[compartment.index()][varIndex]+contribution < 0 && contribution < 0)
-{
-//rezero the amount
-offsetval=y[compartment.index()][varIndex]+contribution;
-dydt[compartment.index()][varIndex] +=contribution-offsetval;
- }
- 
- //add the contribution
- else
- {
+
   dydt[compartment.index()][varIndex] += contribution; 
-  }
+
   }
 
 }
@@ -1843,7 +1882,7 @@ dydt[compartment.index()][varIndex] +=contribution-offsetval;
 WUSCyto_Dynamics::WUSCyto_Dynamics(std::vector<double> &paraValue, std::vector< std::vector<size_t> > &indValue ) 
 {  
 	// Do some checks on the parameters and variable indeces
-    if( paraValue.size()!=8 ) {
+    if( paraValue.size()!=12 ) {
 		std::cerr << "WUSCyto_Dynamics::WUSCyto_Dynamics() "
 							<< "Uses only one parameter k_deg\n"
 	      << "parameter(0)" << " 1st parameter " 
@@ -1873,7 +1912,11 @@ WUSCyto_Dynamics::WUSCyto_Dynamics(std::vector<double> &paraValue, std::vector< 
   tmp[5] = "wusCytoNexp";
   tmp[6] = "freeze";
   tmp[7] = "wusCyto_CkP";
-  
+  tmp[8] = "wusCyto_CkExP";
+  tmp[9] = "wusCyto_CkWbP";
+  tmp[10] = "cmin";
+  tmp[11] = "cmax";
+
 	setParameterId( tmp );
 }
 
@@ -1897,6 +1940,11 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
  double freeze=parameter(6);
  double wusCyto_CkP=parameter(7);
  
+ double wusCyto_CkExP=parameter(8);
+ double wusCyto_CkWbP=parameter(9);
+ double cmin=parameter(10);
+ double cmax=parameter(11);
+
   double wusRNAvar=y[compartment.index()][variableIndex(0,0)];
     double wusNucvar=y[compartment.index()][variableIndex(0,1)];
     double clv3var=y[compartment.index()][variableIndex(0,2)];//addition 092519
@@ -1913,7 +1961,7 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
     wusC_Prod=wusRNAvar*wusRNAtransP;
     //wusC_Deg=((wusCytoDegP*y[compartment.index()][varIndex])/(1+pow(clv3var/clv3_wusCytoP,clv3_wusCytoNexp)))/((ckvar*wusCyto_CkP)+1);
 
-    wusC_Deg=(wusCytoDegP*y[compartment.index()][varIndex])/((ckvar*wusCyto_CkP)+1);
+    wusC_Deg=wusCytoDegP*y[compartment.index()][varIndex]*((cmin)+((cmax-cmin)/(pow((ckvar*wusCyto_CkWbP)/wusCyto_CkP,wusCyto_CkExP)+1)));
     wusC_NtoC=compartment.wusP_FromNuc;
     wusC_CtoN=wusCyto_NucP*y[compartment.index()][varIndex];
 
@@ -1940,16 +1988,8 @@ derivs(Compartment &compartment,size_t varIndex,DataMatrix &y,DataMatrix &dydt)
 
 if (freeze==0)
 {
- if (y[compartment.index()][varIndex]+contribution < 0 && contribution < 0)
-{
-offsetval=y[compartment.index()][varIndex]+contribution;
-dydt[compartment.index()][varIndex] +=contribution-offsetval;
- }
- 
- else
- {
   dydt[compartment.index()][varIndex] += contribution; 
-  }
+
 }
 
 
@@ -2033,19 +2073,9 @@ contribution=contribution*innerLayerEffectiveness;
 
 if (activationOnlyFlag==0)
 {
-      //if the change will put the species amount below zero
- if (y[compartment.index()][varIndex]+contribution < 0 && contribution < 0)
-{
-//rezero the amount
-offsetval=y[compartment.index()][varIndex]+contribution;
-dydt[compartment.index()][varIndex] +=contribution-offsetval;
- }
-
  //add the contribution
- else
- {
   dydt[compartment.index()][varIndex] += contribution;
-  }
+
   }
 
 else if (activationOnlyFlag==1)// if activationOnlyFlag is set, CLV3Peptide is equivalent to CLV3RNA
@@ -2597,5 +2627,342 @@ void DiffusionSimple::printCambium( std::ostream &os, size_t varIndex ) const
      << organism()->topology().id() << "::Cell, j}"
      << "}";
   os << "]" << std::endl;
+}
+
+
+
+
+//////////////////////////////////////////////////////
+
+
+
+DiffusionSimpleCLV3Reg::DiffusionSimpleCLV3Reg(std::vector<double> &paraValue,
+                 std::vector< std::vector<size_t> > &indValue )
+{
+  //
+  // Do some checks on the parameters and variable indeces
+  //
+  if( paraValue.size()!=3 ) {
+    std::cerr << "DiffusionCLV3Reg::DiffusionCLV3Reg() "
+          << "Uses only one parameter D.\n";
+    exit(0);
+  }
+  if( indValue.size() != 1 || indValue[0].size() != 4) {
+    std::cerr << "DiffusionCLV3Reg::DiffusionCLV3Reg() "
+          << "No variable index used.\n";
+    exit(0);
+  }
+  //
+  // Set the variable values
+  //
+  setId("diffusionSimpleCLV3Reg");
+  setParameter(paraValue);
+  setVariableIndex(indValue);
+  //
+  // Set the parameter identities
+  //
+  std::vector<std::string> tmp( numParameter() );
+  tmp.resize( numParameter() );
+  tmp[0] = "D";
+  tmp[1] = "diffparam1";
+  tmp[2] = "diffparam2";
+  setParameterId( tmp );
+}
+
+void DiffusionSimpleCLV3Reg::
+derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt)
+{
+   // Set up system;
+    //unresolved questions. Does CLV3 regulate import or export? Does it matter with the way this system is set up?
+
+    //variables
+    double distanceFromCentralBaseMain = 0;
+    double distanceFromCentralBaseNeighbor = 0;
+    int mainCellLayer = 0;
+    int neighborCellLayer = 0;
+    int diffRegulatedFlag = 0;
+
+    //parameters
+    double diffparam1=parameter(1);
+    double diffparam2=parameter(2);
+
+    //species variables
+        double clv3peptidevar=y[compartment.index()][variableIndex(0,3)];
+        double xvar=y[compartment.index()][variableIndex(0,0)];
+        double yvar=y[compartment.index()][variableIndex(0,1)];
+        double zvar=y[compartment.index()][variableIndex(0,2)];
+
+//calculate distance of main cell from central base to determine layer it is in
+    distanceFromCentralBaseMain =sqrt(pow(xvar,2)+pow(yvar,2)+pow(zvar,2));
+
+if (distanceFromCentralBaseMain > 8.5)
+    mainCellLayer = 1;
+
+else if (distanceFromCentralBaseMain > 8 && distanceFromCentralBaseMain < 8.5)
+    mainCellLayer = 2;
+
+else if (distanceFromCentralBaseMain > 6.5 && distanceFromCentralBaseMain < 8)
+    mainCellLayer = 3;
+
+else
+    mainCellLayer = 0;
+
+  size_t i=compartment.index();
+  for( size_t n=0 ; n<compartment.numNeighbor() ; n++ ) {
+    size_t j=compartment.neighbor(n);
+    //Only update if compartments index less than neighbors
+    if( i<j ) {
+
+        //calculate distance of neighboring cells from central base to determine layer
+        distanceFromCentralBaseNeighbor=sqrt(pow(y[j][0],2)+pow(y[j][1],2)+pow(y[j][3],2));
+
+        if (distanceFromCentralBaseNeighbor > 8.5)
+            neighborCellLayer = 1;
+
+        else if (distanceFromCentralBaseNeighbor > 8 && distanceFromCentralBaseNeighbor < 8.5)
+            neighborCellLayer = 2;
+
+        else if (distanceFromCentralBaseNeighbor > 6.5 && distanceFromCentralBaseNeighbor < 8)
+            neighborCellLayer = 3;
+
+        else
+            neighborCellLayer = 0;
+
+        //if neighbor is L2 and main is L1 or neighbor is L3 and main is L2 flag for CLV3 regulation of diffusion
+        if ((neighborCellLayer == 2 && mainCellLayer == 1) || (neighborCellLayer == 3 && mainCellLayer == 2))
+            diffRegulatedFlag = 1;
+
+      double diff = parameter(0)*(y[j][species]-y[i][species]);
+
+      //clv3 regulation of diff
+      if (diffRegulatedFlag == 1)
+        diff = diff/(1+(clv3peptidevar/diffparam1)*diffparam2);
+
+      dydt[i][species] += diff;
+      dydt[j][species] -= diff;
+
+      diffRegulatedFlag = 0;
+    }
+  }
+}
+
+
+
+///////////////////////////////////////////
+
+Diffusion::Diffusion(std::vector<double> &paraValue,
+             std::vector< std::vector<size_t> >
+             &indValue ) {
+
+  //Do some checks on the parameters and variable indeces
+  //////////////////////////////////////////////////////////////////////
+  if( paraValue.size()!=1 ) {
+    std::cerr << "Diffusion::Diffusion() "
+          << "Uses only one parameter D.\n";
+    exit(0);
+  }
+  if( indValue.size() != 1 || indValue[0].size() !=1 ) {
+    std::cerr << "Diffusion::Diffusion() "
+          << "Variable index for size parameter needed.\n";
+    exit(0);
+  }
+  //Set the variable values
+  //////////////////////////////////////////////////////////////////////
+  setId("diffusion");
+  setParameter(paraValue);
+  setVariableIndex(indValue);
+
+  //Set the parameter identities
+  //////////////////////////////////////////////////////////////////////
+  std::vector<std::string> tmp( numParameter() );
+  tmp.resize( numParameter() );
+  tmp[0] = "D";
+  setParameterId( tmp );
+}
+
+void Diffusion::
+derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt)
+{
+  size_t i=compartment.index();
+  double Vi = y[i][variableIndex(0,0)];//Volume of the compartment
+  if( Vi<=0.0 ) {
+    std::cerr << "Diffusion::derivs Given volume " << Vi
+          << " unphysical.\n";
+    exit(-1);
+  }
+  for( size_t n=0 ; n<compartment.numNeighbor() ; n++ ) {
+    size_t j=compartment.neighbor(n);
+    //Only update if compartments index less than neighbors
+    if( i<j ) {
+      double Vj = y[j][variableIndex(0,0)];//Volume of the compartment neigh
+      if( Vj<=0.0 ) {
+    std::cerr << "Diffusion::derivs Given volume " << Vj
+          << " unphysical.\n";
+    exit(-1);
+      }
+      //If no neighbor area defined assume area and distance 1
+      double distance = 1.0,area=1.0;
+      if( compartment.numNeighborArea()>n ) {
+    area = compartment.neighborArea(n);
+    distance=0.0;
+    size_t dimension=compartment.numTopologyVariable()-1;
+    for (size_t d=compartment.topologyStart(); d<dimension; d++ )
+      distance += (y[j][d]-y[i][d])*(y[j][d]-y[i][d]);
+    //Check that distance is larger than zero
+    if( distance<=0 ) {
+      std::cerr << "Diffusion::derivs Calculated distance "
+            << distance << " unphysical.\n";
+      exit(-1);
+    }
+    distance = sqrt(distance);
+      }
+      double diff = y[j][species]-y[i][species];
+      dydt[i][species] += parameter(0)*diff*area/(Vi*distance);
+      dydt[j][species] -= parameter(0)*diff*area/(Vj*distance);
+    }
+  }
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+DiffusionCLV3Reg::DiffusionCLV3Reg(std::vector<double> &paraValue,
+             std::vector< std::vector<size_t> >
+             &indValue ) {
+
+  //Do some checks on the parameters and variable indeces
+  //////////////////////////////////////////////////////////////////////
+  if( paraValue.size()!=3 ) {
+    std::cerr << "Diffusion::Diffusion() "
+          << "Uses only one parameter D.\n";
+    exit(0);
+  }
+  if( indValue.size() != 1 || indValue[0].size() !=5 ) {
+    std::cerr << "Diffusion::Diffusion() "
+          << "Variable index for size parameter needed.\n";
+    exit(0);
+  }
+  //Set the variable values
+  //////////////////////////////////////////////////////////////////////
+  setId("diffusionCLV3Reg");
+  setParameter(paraValue);
+  setVariableIndex(indValue);
+
+  //Set the parameter identities
+  //////////////////////////////////////////////////////////////////////
+  std::vector<std::string> tmp( numParameter() );
+  tmp.resize( numParameter() );
+  tmp[0] = "D";
+  tmp[1] = "diffparam1";
+  tmp[2] = "diffparam2";
+  setParameterId( tmp );
+}
+
+void DiffusionCLV3Reg::
+derivs(Compartment &compartment,size_t species,DataMatrix &y,DataMatrix &dydt)
+{
+
+    //variables
+    double distanceFromCentralBaseMain = 0;
+    double distanceFromCentralBaseNeighbor = 0;
+    int mainCellLayer = 0;
+    int neighborCellLayer = 0;
+    int diffRegulatedFlag = 0;
+
+    //parameters
+    double diffparam1=parameter(1);
+    double diffparam2=parameter(2);
+
+    //species variables
+        double clv3peptidevar=y[compartment.index()][variableIndex(0,4)];
+        double xvar=y[compartment.index()][variableIndex(0,1)];
+        double yvar=y[compartment.index()][variableIndex(0,2)];
+        double zvar=y[compartment.index()][variableIndex(0,3)];
+
+//calculate distance of main cell from central base to determine layer it is in
+    distanceFromCentralBaseMain =sqrt(pow(xvar,2)+pow(yvar,2)+pow(zvar,2));
+
+if (distanceFromCentralBaseMain > 8.5)
+    mainCellLayer = 1;
+
+else if (distanceFromCentralBaseMain > 8 && distanceFromCentralBaseMain < 8.5)
+    mainCellLayer = 2;
+
+else if (distanceFromCentralBaseMain > 6.5 && distanceFromCentralBaseMain < 8)
+    mainCellLayer = 3;
+
+else
+    mainCellLayer = 0;
+
+
+
+  size_t i=compartment.index();
+  double Vi = y[i][variableIndex(0,0)];//Volume of the compartment
+  if( Vi<=0.0 ) {
+    std::cerr << "Diffusion::derivs Given volume " << Vi
+          << " unphysical.\n";
+    exit(-1);
+  }
+  for( size_t n=0 ; n<compartment.numNeighbor() ; n++ ) {
+    size_t j=compartment.neighbor(n);
+    //Only update if compartments index less than neighbors
+    if( i<j ) {
+      double Vj = y[j][variableIndex(0,0)];//Volume of the compartment neigh
+      if( Vj<=0.0 ) {
+    std::cerr << "Diffusion::derivs Given volume " << Vj
+          << " unphysical.\n";
+    exit(-1);
+      }
+      //If no neighbor area defined assume area and distance 1
+      double distance = 1.0,area=1.0;
+      if( compartment.numNeighborArea()>n ) {
+    area = compartment.neighborArea(n);
+    distance=0.0;
+    size_t dimension=compartment.numTopologyVariable()-1;
+    for (size_t d=compartment.topologyStart(); d<dimension; d++ )
+      distance += (y[j][d]-y[i][d])*(y[j][d]-y[i][d]);
+    //Check that distance is larger than zero
+    if( distance<=0 ) {
+      std::cerr << "Diffusion::derivs Calculated distance "
+            << distance << " unphysical.\n";
+      exit(-1);
+    }
+    distance = sqrt(distance);
+      }
+
+      //calculate distance of neighboring cells from central base to determine layer
+      distanceFromCentralBaseNeighbor=sqrt(pow(y[j][0],2)+pow(y[j][1],2)+pow(y[j][3],2));
+
+      if (distanceFromCentralBaseNeighbor > 8.5)
+          neighborCellLayer = 1;
+
+      else if (distanceFromCentralBaseNeighbor > 8 && distanceFromCentralBaseNeighbor < 8.5)
+          neighborCellLayer = 2;
+
+      else if (distanceFromCentralBaseNeighbor > 6.5 && distanceFromCentralBaseNeighbor < 8)
+          neighborCellLayer = 3;
+
+      else
+          neighborCellLayer = 0;
+
+      //if neighbor is L2 and main is L1 or neighbor is L3 and main is L2 flag for CLV3 regulation of diffusion
+      if ((neighborCellLayer == 2 && mainCellLayer == 1) || (neighborCellLayer == 3 && mainCellLayer == 2))
+          diffRegulatedFlag = 1;
+
+
+      double diff = y[j][species]-y[i][species];
+
+      //clv3 regulation of diff
+      if (diffRegulatedFlag == 1)
+        diff = diff/(1+pow((clv3peptidevar/diffparam1),diffparam2));
+
+      dydt[i][species] += parameter(0)*diff*area/(Vi*distance);
+      dydt[j][species] -= parameter(0)*diff*area/(Vj*distance);
+
+      diffRegulatedFlag = 0;
+
+    }
+  }
 }
 
