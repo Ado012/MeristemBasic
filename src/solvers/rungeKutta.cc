@@ -2123,20 +2123,29 @@ void RK4::simulate()
   
   // Go
   //
+
   t_=startTime_;
   numOk_ = numBad_ = 0;
+    O_->stepsize = h_; //ADDITION: align stochastic time with ode time 062222
+      O_->endTime = endTime_; //ADDITION: align stochastic time with ode time 062222
   while( t_<endTime_ ) {
 		if (debugFlag()) {
 			yCopy_[debugCount()] = y_;
 		} 
+                O_->timePoint = t_; //ADDITION: align stochastic time with ode time 062222
+                 O_->stochasticActionFlag = 1; //ADDITION: flag for stochastic action once per cycle 080322
    //Update the derivatives
     O_->derivs(y_,dydt_);
-    
+
     //Print if applicable 
     if( printFlag_ && t_ >= printTime ) {
       printTime += printDeltaTime;
       print();
+      O_->simPrintFlag = 1; //Addition: 060722 Track printing from Organism
     }
+
+    O_->stochasticActionFlag = 0; //ADDITION: flag for stochastic action once per cycle 080322
+
 
     //Check if step is larger than max allowed
     //max step end is min of endTime_ and printTime
@@ -2173,10 +2182,13 @@ void RK4::simulate()
     t_ += h_;
   }
   if( printFlag_ ) {
+       O_->simPrintFlag = 1; //Addition: 060722 Track printing from Organism
     //Update the derivatives
     O_->derivs(y_,dydt_);
     print();
+    O_->simPrintFlag = 0; //Addition: 060722 Track printing from Organism
   }
+
   std::cerr << "Simulation done.\n"; 
   return;
 }
@@ -2379,6 +2391,8 @@ void RK4::rk4(std::vector< std::vector<double> > &yt,
     for( size_t j=0 ; j<m ; ++j )
       yt[i][j]=y_[i][j]+hh*dyt[i][j];
   
+   O_->simPrintFlag = 0; //Addition: 060722 Track printing from Organism
+
   O_->derivs(yt,dym);//third step
   for(size_t i=0 ; i<n ; ++i )
     for( size_t j=0 ; j<m ; ++j ) {

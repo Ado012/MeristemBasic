@@ -28,12 +28,12 @@ double Clavata3ActivationMechanisms(int activation, double clv3Creation, double 
 
 void CRMProbabilityGenerator(int m4Flag, int crmOrMarkerSwitch, int chromoCycle, probabilitySegment *probabilityMatrix, int *crmOccupancy, int i, double crmActivityCoefficient, double cooptMonEffect, double cooptDimEffect,
                              double geneCRMSiteBindMaxBaseChance, double geneCRMSiteChance_Unbind, double concModifier, int &eventNum, double &probabilityDeltaSum, int HABonusCoopt, int neighborOnlyCoopt, double dimerBindP,
-                             double polBaseBindAffinity, Compartment &compartment, double dimerUnbindP, int L1nodimer, int bonusL1MonCoopt, double distanceFromBase, double bindCoopt);
+                             double polBaseBindAffinity, Compartment &compartment, double dimerUnbindP, int L1nodimer, int bonusL1MonCoopt, double distanceFromBase);
 
 
 
 int CRMEventPicker(int site, int eventFlag, std::string action, double eventBegin, double eventEnd, double wusConc, double randvalue2, int eventNum, double crmTimerLength, double &crmSiteActiveTimer,
-                   int &crmSite, Compartment &compartment, int chrom, int monFireLimit, int crmOrMarkerSwitch, int polTimeLimit, int unbindLimit);
+                   int &crmSite, Compartment &compartment, int chrom, int monFireLimit, int crmOrMarkerSwitch, int polTimeLimit, int unbindLimit, int elementsWithAffinity);
 
 
 void CRMSummer(int crmSite, int j, double &crmActiveTimer, int &wusMonomer, int &wusDimer, double timeStepIncrement);

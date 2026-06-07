@@ -56,8 +56,17 @@ class Organism {
 	Organism( const Organism & organismCopy );
 	
 public:
-	
-	///
+
+
+    std::string filename_; //Addition: AD 051122 Limitation: Will always output based on name of model file.
+
+    int simPrintFlag; //Addition: AD 060722 Tracking sim printing from Organism
+    double stepsize = 0;
+       double endTime = 0;
+       double timePoint = 0;
+       int stochasticActionFlag = 0; //ADDITION: 080222 flag to activate stochastic action once per cycle
+
+    ///
 	/// @brief Empty constructor
 	///
 	/// This constructor only sets the number of topologies and

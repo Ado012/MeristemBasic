@@ -42,6 +42,13 @@ Organism::Organism( const std::string &modelFile,
 		    const std::string &initFile, 
 		    int verbose ) 
 {  
+    //Addition: 051121 Limitation: based on parameter file name
+     int namelength = modelFile.length(); //determine input length
+     int namegrabposition = namelength - 18; //determine which portion to grab by account for .model and filename
+
+    std::string modelName = modelFile.substr(namegrabposition,12);
+  filename_ = modelName;
+
   readOrganism(modelFile,initFile,verbose);
 }
 

@@ -67,7 +67,7 @@ int geneCRMMarker[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 061619
 int polymeraseBindSite[2][2]={{0,0}, {0,0}}; //ADDITION AD 111819
 double crmTimer[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 042519
 double crmTimer2[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 061619
-double unbindTimer[4][5] = {{0,0,0,0,0}, {0,0,0,0,0},{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 010421
+double monResidenceTimer[4][5] = {{0,0,0,0,0}, {0,0,0,0,0},{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 010421
 double rnaPolTimer[2][2]={{0,0}, {0,0}}; //ADDITION AD 111819
 
 int timer=0;//ADDITION AD 110618
@@ -77,8 +77,8 @@ double previousTimeStep[2]= {0,0};
 double latestTimeStep[2]= {0,0};
 double previousRandTimeStep[2]= {0,0};
 double latestRandTimeStep[2]= {0,0};
-double monFireCountDown[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 042519
-double monFireCountDown2[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 061619
+double monRecruitCountDown[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 042519
+double monRecruitCountDown2[2][5] = {{0,0,0,0,0}, {0,0,0,0,0}};//ADDITION AD 061619
 double clv3StepContribution=0;
 double wusP_FromNuc=0;
 double wusP_FromCyto=0;
@@ -89,6 +89,11 @@ int monTracker=0;
 int dimTracker=0;
 int polFire=0;
 int averageAge=0;
+//tracking variables
+int monBindTrack = 0; //ADDITION AD 051122
+int dimBindTrack = 0; //ADDITION AD 051122
+int extraResultsSpacerFlag = 0; //ADDITION AD 051222
+double stochasticTimeCheck = 0;
 //tracking variables
 
 int eventNum[2]={0,0};

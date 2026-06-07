@@ -10,9 +10,10 @@
 
 #include "baseSolver.h"
 #include "rungeKutta.h"
+#include "euler.h"
 //DISABLED 042521
 /*
-#include "euler.h"
+
 #include "implicit.h"
 #include "gillespie.h"
 #include "heunito.h"
@@ -93,6 +94,14 @@ BaseSolver *BaseSolver::getSolver(Organism *O, std::ifstream &IN)
 	  solver = new RK4(O,(std::ifstream &) IN);
     else if(idValue == "Dopr853")
       solver = new Dopr853(O,(std::ifstream &) IN);
+    //READDED Euler 121525
+    // euler.h
+    else if (idValue == "Euler")
+        solver = new Euler(O,(std::ifstream &) IN);
+    else if (idValue == "EulerEquilibrium")
+        solver = new EulerEquilibrium(O,(std::ifstream &) IN);
+    else if (idValue == "EulerTruncated")
+        solver = new EulerTruncated(O,(std::ifstream &) IN);
 //DELETION 042521
 	else {
 	  std::cerr << "BaseSolver::BaseSolver() (NYTT FELMEDDELANDE)- "
